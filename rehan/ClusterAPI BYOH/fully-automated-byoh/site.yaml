@@ -1,0 +1,187 @@
+# ==========================================
+# PLAY 1: Key Rotation & Inventory Setup
+# ==========================================
+- name: 1. Rotate Keys & Setup Inventory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    input: "{{ lookup('file', 'input.json') | from_json }}"
+    kubeconfig: "~/.kube/config"
+  
+  tasks:
+    # --- STEP A: CLEANUP OLD KEYS ---
+    - name: Delete old BootstrapKubeconfig objects
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} delete bootstrapkubeconfig --all -n default --ignore-not-found=true
+
+    # --- STEP B: GENERATE FRESH KEY ---
+    - name: Get API Server Endpoint
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} config view -ojsonpath='{.clusters[0].cluster.server}'
+      register: api_server
+    
+    - name: Get CA Cert
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} config view --flatten -ojsonpath='{.clusters[0].cluster.certificate-authority-data}'
+      register: ca_cert
+
+    - name: Create Fresh BootstrapKubeconfig
+      kubernetes.core.k8s:
+        kubeconfig: "{{ kubeconfig }}"
+        state: present
+        definition:
+          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+          kind: BootstrapKubeconfig
+          metadata:
+            name: "bootstrap-kubeconfig"
+            namespace: default
+          spec:
+            apiserver: "{{ api_server.stdout }}"
+            certificate-authority-data: "{{ ca_cert.stdout }}"
+            token-ttl: 1h
+
+    - name: Extract Token Data
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get bootstrapkubeconfig bootstrap-kubeconfig -n default -o=jsonpath='{.status.bootstrapKubeconfigData}'
+      register: bootstrap_data
+      until: bootstrap_data.stdout != ""
+      retries: 10
+      delay: 2
+
+    - name: Save Token to File
+      copy:
+        content: "{{ bootstrap_data.stdout }}"
+        dest: "./bootstrap-kubeconfig.conf"
+        mode: '0600'
+
+    # --- STEP C: INVENTORY SETUP ---
+    - name: Add physical hosts to Ansible inventory
+      add_host:
+        name: "{{ item.host_ip }}"
+        groups: physical_nodes
+        ansible_user: "{{ item.host_user }}"
+        # ansible_password: "{{ item.host_pwd }}" 
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        byoh_hostname: "{{ item.host_name }}"
+        byoh_id: "{{ item.host_id }}"
+      loop: "{{ input.hosts }}"
+
+# ==========================================
+# PLAY 2: Host Provisioning (Physical Layer)
+# ==========================================
+- name: 2. Configure OS & Install Agent
+  hosts: physical_nodes
+  become: true
+  vars:
+    k8s_version: "1.29.3-1.1"
+    agent_url: "https://raw.githubusercontent.com/RehanFazal77/oransc-sanity/main/rehan/ClusterAPI%20BYOH/byoh-hostagent-linux-amd64"
+  tasks:
+    # --- OS CONFIG ---
+    - name: Disable swap
+      shell: |
+        swapoff -a
+        sed -i '/swap/d' /etc/fstab
+
+    - name: Load kernel modules
+      shell: |
+        modprobe overlay
+        modprobe br_netfilter
+        echo "overlay" > /etc/modules-load.d/containerd.conf
+        echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+
+    - name: Set sysctl params
+      shell: |
+        echo "net.bridge.bridge-nf-call-ip6tables = 1" > /etc/sysctl.d/kubernetes.conf
+        echo "net.bridge.bridge-nf-call-iptables = 1" >> /etc/sysctl.d/kubernetes.conf
+        echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.d/kubernetes.conf
+        sysctl --system
+
+    # --- CONTAINERD ---
+    - name: Install Containerd
+      apt:
+        name: containerd
+        state: present
+        update_cache: yes
+
+    - name: Configure Containerd (SystemdCgroup Fix)
+      shell: |
+        mkdir -p /etc/containerd
+        containerd config default > /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+        systemctl restart containerd
+
+    # --- K8S BINARIES ---
+    - name: Install K8s Prereqs
+      apt:
+        pkg: [apt-transport-https, ca-certificates, curl, gpg, socat, ebtables, ethtool, conntrack]
+        state: present
+
+    - name: Add K8s Repo & Install Binaries
+      shell: |
+        mkdir -p /etc/apt/keyrings
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg --yes
+        echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
+        apt-get update
+        apt-get install -y kubelet={{ k8s_version }} kubeadm={{ k8s_version }} kubectl={{ k8s_version }}
+        apt-mark hold kubelet kubeadm kubectl
+
+    # --- DEPLOY AGENT ---
+    - name: Download Fixed Agent
+      get_url:
+        url: "{{ agent_url }}"
+        dest: /usr/local/bin/byoh-hostagent
+        mode: '0755'
+        force: yes
+
+    - name: Copy Fresh Registration Key
+      copy:
+        src: ./bootstrap-kubeconfig.conf
+        dest: /root/bootstrap-kubeconfig.conf
+
+    - name: Start Agent
+      shell: |
+        pkill byoh-hostagent || true
+        sleep 2
+        nohup /usr/local/bin/byoh-hostagent --bootstrap-kubeconfig /root/bootstrap-kubeconfig.conf --skip-installation > /var/log/byoh.log 2>&1 &
+
+# ==========================================
+# PLAY 3: Cluster Orchestration (Logical Layer)
+# ==========================================
+- name: 3. Deploy Pinned Clusters
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    input: "{{ lookup('file', 'input.json') | from_json }}"
+    kubeconfig: "~/.kube/config"
+  tasks:
+    # 1. WAIT for Agents to appear in Kubernetes
+    # This loop waits until `kubectl get` succeeds, ensuring the host is registered.
+    - name: Wait for ByoHosts to Register
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get byohost {{ item.host_name }} --ignore-not-found
+      register: host_check
+      until: host_check.stdout != ""
+      retries: 60  # Wait up to 5 minutes
+      delay: 5
+      loop: "{{ input.hosts }}"
+
+    # 2. REMOVE the Gatekeeper
+    - name: Remove Restrictive Webhook
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} delete validatingwebhookconfiguration byoh-validating-webhook-configuration --ignore-not-found=true
+
+    # 3. APPLY LABELS (Automated Pinning)
+    # This runs the exact command you asked for, looped over all hosts.
+    - name: Pin Hosts (Label ByoHosts with IDs)
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} label byohost {{ item.host_name }} host-id={{ item.host_id }} --overwrite
+      loop: "{{ input.hosts }}"
+
+    # 4. DEPLOY CLUSTERS
+    - name: Generate and Apply Manifest
+      kubernetes.core.k8s:
+        kubeconfig: "{{ kubeconfig }}"
+        state: present
+        definition: "{{ lookup('template', 'templates/cluster.yaml.j2') }}"

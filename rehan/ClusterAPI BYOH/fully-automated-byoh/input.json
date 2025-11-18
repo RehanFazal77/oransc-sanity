@@ -1,0 +1,53 @@
+{
+  "hosts": [
+    {
+      "host_id": 1,
+      "host_name": "cluster-a-contplane",
+      "host_ip": "10.105.247.177",
+      "host_user": "ubuntu",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 2,
+      "host_name": "cluster-a-wnode1",
+      "host_ip": "10.105.247.121",
+      "host_user": "ubuntu",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 3,
+      "host_name": "cluster-a-wnode2",
+      "host_ip": "10.105.247.203",
+      "host_user": "ubuntu",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 4,
+      "host_name": "cluster-b-contplane",
+      "host_ip": "10.105.247.111",
+      "host_user": "ubuntu",
+      "host_pwd": ""
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": 1,
+      "cluster_name": "ran",
+      "cluster_masters": [
+        { "host_id": 1 }
+      ],
+      "cluster_workers": [
+        { "host_id": 2 },
+        { "host_id": 3 }
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "cluster_name": "core",
+      "cluster_masters": [
+        { "host_id": 4 }
+      ],
+      "cluster_workers": []
+    }
+  ]
+}

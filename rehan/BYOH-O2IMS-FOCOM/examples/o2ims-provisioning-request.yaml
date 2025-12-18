@@ -1,0 +1,43 @@
+# O2IMS ProvisioningRequest Example
+#
+# This CR can be created directly (bypassing FOCOM) to request cluster
+# provisioning through the O2 IMS operator.
+#
+# Flow: ProvisioningRequest -> BYOH Cluster Resources
+#
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ProvisioningRequest
+metadata:
+  name: core-cluster-provisioning
+  namespace: default
+spec:
+  # Request identification
+  name: "Core Site Cluster"
+  description: "Provision a BYOH Kubernetes cluster for core network functions"
+  
+  # Template configuration
+  templateName: "byoh-workload-cluster"
+  templateVersion: "v1.0.0"
+  
+  # Template parameters
+  templateParameters:
+    # Required: cluster name
+    clusterName: core
+    
+    # Provisioner type (currently only 'byoh' is supported)
+    clusterProvisioner: byoh
+    
+    # Kubernetes version
+    k8sVersion: "v1.32.0"
+    
+    # Host assignments - these must match registered ByoHosts
+    hosts:
+      masters:
+        - hostId: 4
+          hostName: hpe21
+          hostIp: "hpe21.anuket.iol.unh.edu"
+      
+      workers:
+        - hostId: 5
+          hostName: hpe26
+          hostIp: "hpe26.anuket.iol.unh.edu"

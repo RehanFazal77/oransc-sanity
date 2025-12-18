@@ -1,0 +1,2070 @@
+ubuntu@mgmt-1:~$ git clone https://github.com/RehanFazal77/oransc-sanity.git
+Cloning into 'oransc-sanity'...
+remote: Enumerating objects: 1674, done.
+remote: Counting objects: 100% (863/863), done.
+remote: Compressing objects: 100% (575/575), done.
+remote: Total 1674 (delta 341), reused 688 (delta 234), pack-reused 811 (from 2)
+Receiving objects: 100% (1674/1674), 62.04 MiB | 16.20 MiB/s, done.
+Resolving deltas: 100% (614/614), done.
+Updating files: 100% (1601/1601), done.
+ubuntu@mgmt-1:~$ ls
+oransc-sanity
+ubuntu@mgmt-1:~$ cd oransc-sanity/rehan/BYOH-O2IMS-FOCOM/
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ ls
+Readme.md  TESTING.md  byoh_changes.patch  examples  focom-operator  input.json  mgmt.sh  o2ims-operator  site.yaml  templates
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ chmod +x mgmt.sh 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ ./mgmt.sh 
+Logging setup to /home/ubuntu/k8s-mgmt-setup.log
+=== [1/12] System Preparation (Swap, Modules, Sysctl) ===
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+iproute2 is already the newest version (5.15.0-1ubuntu2).
+iproute2 set to manually installed.
+lsb-release is already the newest version (11.1.0ubuntu4).
+lsb-release set to manually installed.
+ca-certificates is already the newest version (20240203~22.04.1).
+ca-certificates set to manually installed.
+curl is already the newest version (7.81.0-1ubuntu1.21).
+curl set to manually installed.
+git is already the newest version (1:2.34.1-1ubuntu1.15).
+git set to manually installed.
+gnupg is already the newest version (2.2.27-3ubuntu2.4).
+gnupg set to manually installed.
+gpg is already the newest version (2.2.27-3ubuntu2.4).
+gpg set to manually installed.
+iptables is already the newest version (1.8.7-1ubuntu5.2).
+iptables set to manually installed.
+tar is already the newest version (1.34+dfsg-1ubuntu0.1.22.04.2).
+tar set to manually installed.
+wget is already the newest version (1.21.2-2ubuntu1.1).
+wget set to manually installed.
+The following additional packages will be installed:
+  cpp cpp-11 fontconfig-config fonts-dejavu-core gcc-11 gcc-11-base libasan6
+  libatomic1 libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev
+  libdeflate0 libfontconfig1 libgcc-11-dev libgd3 libgomp1 libisl23 libitm1
+  libjbig0 libjpeg-turbo8 libjpeg8 libjq1 liblsan0 libmpc3 libnsl-dev libonig5
+  libquadmath0 libtiff5 libtirpc-dev libtsan0 libubsan1 libwebp7 libxpm4
+  linux-libc-dev manpages-dev rpcsvc-proto
+Suggested packages:
+  cpp-doc gcc-11-locales gcc-multilib autoconf automake libtool flex bison gdb
+  gcc-doc gcc-11-multilib gcc-11-doc glibc-doc libgd-tools make-doc
+The following NEW packages will be installed:
+  apt-transport-https cpp cpp-11 fontconfig-config fonts-dejavu-core gcc
+  gcc-11 gcc-11-base jq libasan6 libatomic1 libc-dev-bin libc-devtools
+  libc6-dev libcc1-0 libcrypt-dev libdeflate0 libfontconfig1 libgcc-11-dev
+  libgd3 libgomp1 libisl23 libitm1 libjbig0 libjpeg-turbo8 libjpeg8 libjq1
+  liblsan0 libmpc3 libnsl-dev libonig5 libquadmath0 libtiff5 libtirpc-dev
+  libtsan0 libubsan1 libwebp7 libxpm4 linux-libc-dev make manpages-dev
+  rpcsvc-proto
+0 upgraded, 42 newly installed, 0 to remove and 0 not upgraded.
+Need to get 49.2 MB of archives.
+After this operation, 154 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 apt-transport-https all 2.4.14 [1510 B]
+Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.4.0-1ubuntu1~22.04.2 [20.8 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.4.0-1ubuntu1~22.04.2 [10.0 MB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy/main amd64 fonts-dejavu-core all 2.37-2build1 [1041 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 fontconfig-config all 2.13.1-4.2ubuntu5 [29.1 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.3.0-1ubuntu1~22.04.2 [48.3 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.3.0-1ubuntu1~22.04.2 [127 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.3.0-1ubuntu1~22.04.2 [30.2 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.3.0-1ubuntu1~22.04.2 [10.4 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.4.0-1ubuntu1~22.04.2 [2283 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.3.0-1ubuntu1~22.04.2 [1069 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.4.0-1ubuntu1~22.04.2 [2262 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.3.0-1ubuntu1~22.04.2 [976 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.3.0-1ubuntu1~22.04.2 [154 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.4.0-1ubuntu1~22.04.2 [2517 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.4.0-1ubuntu1~22.04.2 [20.1 MB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+Get:21 http://archive.ubuntu.com/ubuntu jammy/main amd64 libonig5 amd64 6.9.7.1-2build1 [172 kB]
+Get:22 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjq1 amd64 1.6-2.1ubuntu3.1 [133 kB]
+Get:23 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 jq amd64 1.6-2.1ubuntu3.1 [52.5 kB]
+Get:24 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.11 [20.3 kB]
+Get:25 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfontconfig1 amd64 2.13.1-4.2ubuntu5 [131 kB]
+Get:26 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg-turbo8 amd64 2.1.2-0ubuntu1 [134 kB]
+Get:27 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg8 amd64 8c-2ubuntu10 [2264 B]
+Get:28 http://archive.ubuntu.com/ubuntu jammy/main amd64 libdeflate0 amd64 1.10-2 [70.9 kB]
+Get:29 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.22.04.1 [29.2 kB]
+Get:30 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libwebp7 amd64 1.2.2-2ubuntu0.22.04.2 [206 kB]
+Get:31 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtiff5 amd64 4.3.0-6ubuntu0.12 [185 kB]
+Get:32 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxpm4 amd64 1:3.5.12-1ubuntu0.22.04.2 [36.7 kB]
+Get:33 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgd3 amd64 2.3.0-2ubuntu2.3 [129 kB]
+Get:34 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.11 [29.0 kB]
+Get:35 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-164.174 [1325 kB]
+Get:36 http://archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+Get:37 http://archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+Get:38 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+Get:39 http://archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+Get:40 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.11 [2100 kB]
+Get:41 http://archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+Get:42 http://archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+Fetched 49.2 MB in 11s (4342 kB/s)
+Selecting previously unselected package apt-transport-https.
+(Reading database ... 64623 files and directories currently installed.)
+Preparing to unpack .../00-apt-transport-https_2.4.14_all.deb ...
+Unpacking apt-transport-https (2.4.14) ...
+Selecting previously unselected package gcc-11-base:amd64.
+Preparing to unpack .../01-gcc-11-base_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libisl23:amd64.
+Preparing to unpack .../02-libisl23_0.24-2build1_amd64.deb ...
+Unpacking libisl23:amd64 (0.24-2build1) ...
+Selecting previously unselected package libmpc3:amd64.
+Preparing to unpack .../03-libmpc3_1.2.1-2build1_amd64.deb ...
+Unpacking libmpc3:amd64 (1.2.1-2build1) ...
+Selecting previously unselected package cpp-11.
+Preparing to unpack .../04-cpp-11_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking cpp-11 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../05-cpp_4%3a11.2.0-1ubuntu1_amd64.deb ...
+Unpacking cpp (4:11.2.0-1ubuntu1) ...
+Selecting previously unselected package fonts-dejavu-core.
+Preparing to unpack .../06-fonts-dejavu-core_2.37-2build1_all.deb ...
+Unpacking fonts-dejavu-core (2.37-2build1) ...
+Selecting previously unselected package fontconfig-config.
+Preparing to unpack .../07-fontconfig-config_2.13.1-4.2ubuntu5_all.deb ...
+Unpacking fontconfig-config (2.13.1-4.2ubuntu5) ...
+Selecting previously unselected package libcc1-0:amd64.
+Preparing to unpack .../08-libcc1-0_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libgomp1:amd64.
+Preparing to unpack .../09-libgomp1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libgomp1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../10-libitm1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libitm1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../11-libatomic1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libatomic1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libasan6:amd64.
+Preparing to unpack .../12-libasan6_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libasan6:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package liblsan0:amd64.
+Preparing to unpack .../13-liblsan0_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking liblsan0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libtsan0:amd64.
+Preparing to unpack .../14-libtsan0_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libtsan0:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libubsan1:amd64.
+Preparing to unpack .../15-libubsan1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libubsan1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../16-libquadmath0_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package libgcc-11-dev:amd64.
+Preparing to unpack .../17-libgcc-11-dev_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package gcc-11.
+Preparing to unpack .../18-gcc-11_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking gcc-11 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../19-gcc_4%3a11.2.0-1ubuntu1_amd64.deb ...
+Unpacking gcc (4:11.2.0-1ubuntu1) ...
+Selecting previously unselected package libonig5:amd64.
+Preparing to unpack .../20-libonig5_6.9.7.1-2build1_amd64.deb ...
+Unpacking libonig5:amd64 (6.9.7.1-2build1) ...
+Selecting previously unselected package libjq1:amd64.
+Preparing to unpack .../21-libjq1_1.6-2.1ubuntu3.1_amd64.deb ...
+Unpacking libjq1:amd64 (1.6-2.1ubuntu3.1) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../22-jq_1.6-2.1ubuntu3.1_amd64.deb ...
+Unpacking jq (1.6-2.1ubuntu3.1) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../23-libc-dev-bin_2.35-0ubuntu3.11_amd64.deb ...
+Unpacking libc-dev-bin (2.35-0ubuntu3.11) ...
+Selecting previously unselected package libfontconfig1:amd64.
+Preparing to unpack .../24-libfontconfig1_2.13.1-4.2ubuntu5_amd64.deb ...
+Unpacking libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+Selecting previously unselected package libjpeg-turbo8:amd64.
+Preparing to unpack .../25-libjpeg-turbo8_2.1.2-0ubuntu1_amd64.deb ...
+Unpacking libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+Selecting previously unselected package libjpeg8:amd64.
+Preparing to unpack .../26-libjpeg8_8c-2ubuntu10_amd64.deb ...
+Unpacking libjpeg8:amd64 (8c-2ubuntu10) ...
+Selecting previously unselected package libdeflate0:amd64.
+Preparing to unpack .../27-libdeflate0_1.10-2_amd64.deb ...
+Unpacking libdeflate0:amd64 (1.10-2) ...
+Selecting previously unselected package libjbig0:amd64.
+Preparing to unpack .../28-libjbig0_2.1-3.1ubuntu0.22.04.1_amd64.deb ...
+Unpacking libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+Selecting previously unselected package libwebp7:amd64.
+Preparing to unpack .../29-libwebp7_1.2.2-2ubuntu0.22.04.2_amd64.deb ...
+Unpacking libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+Selecting previously unselected package libtiff5:amd64.
+Preparing to unpack .../30-libtiff5_4.3.0-6ubuntu0.12_amd64.deb ...
+Unpacking libtiff5:amd64 (4.3.0-6ubuntu0.12) ...
+Selecting previously unselected package libxpm4:amd64.
+Preparing to unpack .../31-libxpm4_1%3a3.5.12-1ubuntu0.22.04.2_amd64.deb ...
+Unpacking libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+Selecting previously unselected package libgd3:amd64.
+Preparing to unpack .../32-libgd3_2.3.0-2ubuntu2.3_amd64.deb ...
+Unpacking libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+Selecting previously unselected package libc-devtools.
+Preparing to unpack .../33-libc-devtools_2.35-0ubuntu3.11_amd64.deb ...
+Unpacking libc-devtools (2.35-0ubuntu3.11) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../34-linux-libc-dev_5.15.0-164.174_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (5.15.0-164.174) ...
+Selecting previously unselected package libcrypt-dev:amd64.
+Preparing to unpack .../35-libcrypt-dev_1%3a4.4.27-1_amd64.deb ...
+Unpacking libcrypt-dev:amd64 (1:4.4.27-1) ...
+Selecting previously unselected package rpcsvc-proto.
+Preparing to unpack .../36-rpcsvc-proto_1.4.2-0ubuntu6_amd64.deb ...
+Unpacking rpcsvc-proto (1.4.2-0ubuntu6) ...
+Selecting previously unselected package libtirpc-dev:amd64.
+Preparing to unpack .../37-libtirpc-dev_1.3.2-2ubuntu0.1_amd64.deb ...
+Unpacking libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Selecting previously unselected package libnsl-dev:amd64.
+Preparing to unpack .../38-libnsl-dev_1.3.0-2build2_amd64.deb ...
+Unpacking libnsl-dev:amd64 (1.3.0-2build2) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../39-libc6-dev_2.35-0ubuntu3.11_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.35-0ubuntu3.11) ...
+Selecting previously unselected package make.
+Preparing to unpack .../40-make_4.3-4.1build1_amd64.deb ...
+Unpacking make (4.3-4.1build1) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../41-manpages-dev_5.10-1ubuntu1_all.deb ...
+Unpacking manpages-dev (5.10-1ubuntu1) ...
+Setting up gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up manpages-dev (5.10-1ubuntu1) ...
+Setting up libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+Setting up apt-transport-https (2.4.14) ...
+Setting up libdeflate0:amd64 (1.10-2) ...
+Setting up linux-libc-dev:amd64 (5.15.0-164.174) ...
+Setting up libgomp1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+Setting up libasan6:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+Setting up make (4.3-4.1build1) ...
+Setting up libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up libmpc3:amd64 (1.2.1-2build1) ...
+Setting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up fonts-dejavu-core (2.37-2build1) ...
+Setting up libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+Setting up libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+Setting up libubsan1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+Setting up libisl23:amd64 (0.24-2build1) ...
+Setting up libc-dev-bin (2.35-0ubuntu3.11) ...
+Setting up libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up libonig5:amd64 (6.9.7.1-2build1) ...
+Setting up liblsan0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up libitm1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+Setting up libtsan0:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu10) ...
+Setting up cpp-11 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up libjq1:amd64 (1.6-2.1ubuntu3.1) ...
+Setting up fontconfig-config (2.13.1-4.2ubuntu5) ...
+Setting up libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up gcc-11 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up cpp (4:11.2.0-1ubuntu1) ...
+Setting up jq (1.6-2.1ubuntu3.1) ...
+Setting up libc6-dev:amd64 (2.35-0ubuntu3.11) ...
+Setting up libtiff5:amd64 (4.3.0-6ubuntu0.12) ...
+Setting up libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+Setting up gcc (4:11.2.0-1ubuntu1) ...
+Setting up libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+Setting up libc-devtools (2.35-0ubuntu3.11) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.11) ...
+
+Running kernel seems to be up-to-date.
+
+                                      No services need to be restarted.
+
+                                                                       No containers need to be restarted.
+
+                                                                                                          No user sessions are running outdated binaries.
+
+                                                                                                                                                         No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                                                                                                                                                                                                                                   overlay
+br_netfilter
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+* Applying /etc/sysctl.d/10-console-messages.conf ...
+kernel.printk = 4 4 1 7
+* Applying /etc/sysctl.d/10-ipv6-privacy.conf ...
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.use_tempaddr = 2
+* Applying /etc/sysctl.d/10-kernel-hardening.conf ...
+kernel.kptr_restrict = 1
+* Applying /etc/sysctl.d/10-magic-sysrq.conf ...
+kernel.sysrq = 176
+* Applying /etc/sysctl.d/10-network-security.conf ...
+net.ipv4.conf.default.rp_filter = 2
+net.ipv4.conf.all.rp_filter = 2
+* Applying /etc/sysctl.d/10-ptrace.conf ...
+kernel.yama.ptrace_scope = 1
+* Applying /etc/sysctl.d/10-zeropage.conf ...
+vm.mmap_min_addr = 65536
+* Applying /usr/lib/sysctl.d/50-default.conf ...
+kernel.core_uses_pid = 1
+net.ipv4.conf.default.rp_filter = 2
+net.ipv4.conf.default.accept_source_route = 0
+sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
+net.ipv4.conf.default.promote_secondaries = 1
+sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
+net.ipv4.ping_group_range = 0 2147483647
+net.core.default_qdisc = fq_codel
+fs.protected_hardlinks = 1
+fs.protected_symlinks = 1
+fs.protected_regular = 1
+fs.protected_fifos = 1
+* Applying /usr/lib/sysctl.d/50-pid-max.conf ...
+kernel.pid_max = 4194304
+* Applying /etc/sysctl.d/99-cloudimg-ipv6.conf ...
+net.ipv6.conf.all.use_tempaddr = 0
+net.ipv6.conf.default.use_tempaddr = 0
+* Applying /usr/lib/sysctl.d/99-protect-links.conf ...
+fs.protected_fifos = 1
+fs.protected_hardlinks = 1
+fs.protected_regular = 2
+fs.protected_symlinks = 1
+* Applying /etc/sysctl.d/99-sysctl.conf ...
+* Applying /etc/sysctl.d/k8s.conf ...
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+* Applying /etc/sysctl.conf ...
+=== [2/12] Installing Docker (Required for Controller Build) ===
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base pigz runc ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-buildx
+  docker-compose-v2 docker-doc rinse zfs-fuse | zfsutils
+The following NEW packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base docker.io pigz runc
+  ubuntu-fan
+0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+Need to get 76.3 MB of archives.
+After this operation, 289 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy/universe amd64 pigz amd64 2.6-1 [63.6 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy/main amd64 bridge-utils amd64 1.7-1ubuntu3 [34.4 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 runc amd64 1.3.3-0ubuntu1~22.04.3 [8857 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 containerd amd64 1.7.28-0ubuntu1~22.04.1 [38.5 MB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dns-root-data all 2024071801~ubuntu0.22.04.1 [6132 B]
+Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dnsmasq-base amd64 2.90-0ubuntu0.22.04.1 [374 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 docker.io amd64 28.2.2-0ubuntu1~22.04.1 [28.4 MB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/universe amd64 ubuntu-fan all 0.12.16 [35.2 kB]
+Preconfiguring packages ...
+Fetched 76.3 MB in 3s (24.5 MB/s)
+Selecting previously unselected package pigz.
+(Reading database ... 68971 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.6-1_amd64.deb ...
+Unpacking pigz (2.6-1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../1-bridge-utils_1.7-1ubuntu3_amd64.deb ...
+Unpacking bridge-utils (1.7-1ubuntu3) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../2-runc_1.3.3-0ubuntu1~22.04.3_amd64.deb ...
+Unpacking runc (1.3.3-0ubuntu1~22.04.3) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../3-containerd_1.7.28-0ubuntu1~22.04.1_amd64.deb ...
+Unpacking containerd (1.7.28-0ubuntu1~22.04.1) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../4-dns-root-data_2024071801~ubuntu0.22.04.1_all.deb ...
+Unpacking dns-root-data (2024071801~ubuntu0.22.04.1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../5-dnsmasq-base_2.90-0ubuntu0.22.04.1_amd64.deb ...
+Unpacking dnsmasq-base (2.90-0ubuntu0.22.04.1) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../6-docker.io_28.2.2-0ubuntu1~22.04.1_amd64.deb ...
+Unpacking docker.io (28.2.2-0ubuntu1~22.04.1) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../7-ubuntu-fan_0.12.16_all.deb ...
+Unpacking ubuntu-fan (0.12.16) ...
+Setting up dnsmasq-base (2.90-0ubuntu0.22.04.1) ...
+Setting up runc (1.3.3-0ubuntu1~22.04.3) ...
+Setting up dns-root-data (2024071801~ubuntu0.22.04.1) ...
+Setting up bridge-utils (1.7-1ubuntu3) ...
+Setting up pigz (2.6-1) ...
+Setting up containerd (1.7.28-0ubuntu1~22.04.1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /lib/systemd/system/containerd.service.
+Setting up ubuntu-fan (0.12.16) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/ubuntu-fan.service → /lib/systemd/system/ubuntu-fan.service.
+Setting up docker.io (28.2.2-0ubuntu1~22.04.1) ...
+Adding group `docker' (GID 121) ...
+Done.
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /lib/systemd/system/docker.service.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /lib/systemd/system/docker.socket.
+Processing triggers for dbus (1.12.20-2ubuntu4.1) ...
+Processing triggers for man-db (2.10.2-1) ...
+
+Running kernel seems to be up-to-date.
+
+                                      No services need to be restarted.
+
+                                                                       No containers need to be restarted.
+
+                                                                                                          No user sessions are running outdated binaries.
+
+                                                                                                                                                         No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                                                                                                                                                                                                                                   Docker installed version: Docker version 28.2.2, build 28.2.2-0ubuntu1~22.04.1
+=== [3/12] Installing Containerd ===
+Reading package lists...
+Building dependency tree...
+Reading state information...
+containerd is already the newest version (1.7.28-0ubuntu1~22.04.1).
+containerd set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+=== [4/12] Installing Kubernetes Binaries (v1.30) ===
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Get:3 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  InRelease [1192 B]
+Get:6 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  Packages [20.3 kB]
+Fetched 21.5 kB in 1s (16.1 kB/s)
+Reading package lists...
+kubelet was already not on hold.
+kubeadm was already not on hold.
+kubectl was already not on hold.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  conntrack cri-tools kubernetes-cni
+The following NEW packages will be installed:
+  conntrack cri-tools kubeadm kubectl kubelet kubernetes-cni
+0 upgraded, 6 newly installed, 0 to remove and 0 not upgraded.
+Need to get 93.8 MB of archives.
+After this operation, 343 MB of additional disk space will be used.
+Get:2 http://archive.ubuntu.com/ubuntu jammy/main amd64 conntrack amd64 1:1.4.6-2build2 [33.5 kB]
+Get:1 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  cri-tools 1.30.1-1.1 [21.3 MB]
+Get:3 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  kubeadm 1.30.14-1.1 [10.5 MB]
+Get:4 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  kubectl 1.30.14-1.1 [10.9 MB]
+Get:5 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  kubernetes-cni 1.4.0-1.1 [32.9 MB]
+Get:6 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.30/deb  kubelet 1.30.14-1.1 [18.2 MB]
+Fetched 93.8 MB in 4s (26.2 MB/s)
+Selecting previously unselected package conntrack.
+(Reading database ... 69339 files and directories currently installed.)
+Preparing to unpack .../0-conntrack_1%3a1.4.6-2build2_amd64.deb ...
+Unpacking conntrack (1:1.4.6-2build2) ...
+Selecting previously unselected package cri-tools.
+Preparing to unpack .../1-cri-tools_1.30.1-1.1_amd64.deb ...
+Unpacking cri-tools (1.30.1-1.1) ...
+Selecting previously unselected package kubeadm.
+Preparing to unpack .../2-kubeadm_1.30.14-1.1_amd64.deb ...
+Unpacking kubeadm (1.30.14-1.1) ...
+Selecting previously unselected package kubectl.
+Preparing to unpack .../3-kubectl_1.30.14-1.1_amd64.deb ...
+Unpacking kubectl (1.30.14-1.1) ...
+Selecting previously unselected package kubernetes-cni.
+Preparing to unpack .../4-kubernetes-cni_1.4.0-1.1_amd64.deb ...
+Unpacking kubernetes-cni (1.4.0-1.1) ...
+Selecting previously unselected package kubelet.
+Preparing to unpack .../5-kubelet_1.30.14-1.1_amd64.deb ...
+Unpacking kubelet (1.30.14-1.1) ...
+Setting up conntrack (1:1.4.6-2build2) ...
+Setting up kubectl (1.30.14-1.1) ...
+Setting up cri-tools (1.30.1-1.1) ...
+Setting up kubernetes-cni (1.4.0-1.1) ...
+Setting up kubeadm (1.30.14-1.1) ...
+Setting up kubelet (1.30.14-1.1) ...
+Processing triggers for man-db (2.10.2-1) ...
+
+Running kernel seems to be up-to-date.
+
+                                      No services need to be restarted.
+
+                                                                       No containers need to be restarted.
+
+                                                                                                          No user sessions are running outdated binaries.
+
+                                                                                                                                                         No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                                                                                                                                                                                                                                   kubelet set on hold.
+kubeadm set on hold.
+kubectl set on hold.
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--cgroup-driver=systemd"
+=== [5/12] Setting up Ansible & Kubernetes Collections ===
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential bzip2 dpkg-dev fakeroot g++ g++-11 ieee-data
+  javascript-common libalgorithm-diff-perl libalgorithm-diff-xs-perl
+  libalgorithm-merge-perl libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libjs-jquery libjs-sphinxdoc libjs-underscore
+  libpython3-dev libpython3.10-dev libstdc++-11-dev lto-disabled-list
+  python3-argcomplete python3-dev python3-dnspython python3-jmespath
+  python3-kerberos python3-libcloud python3-lockfile python3-netaddr
+  python3-ntlm-auth python3-pycryptodome python3-requests-kerberos
+  python3-requests-ntlm python3-requests-toolbelt python3-selinux
+  python3-simplejson python3-wheel python3-winrm python3-xmltodict
+  python3.10-dev zlib1g-dev
+Suggested packages:
+  cowsay sshpass bzip2-doc debian-keyring g++-multilib g++-11-multilib
+  gcc-11-doc apache2 | lighttpd | httpd bzr libstdc++-11-doc python3-sniffio
+  python3-trio python-lockfile-doc ipython3 python-netaddr-docs
+The following NEW packages will be installed:
+  ansible build-essential bzip2 dpkg-dev fakeroot g++ g++-11 ieee-data
+  javascript-common libalgorithm-diff-perl libalgorithm-diff-xs-perl
+  libalgorithm-merge-perl libdpkg-perl libexpat1-dev libfakeroot
+  libfile-fcntllock-perl libjs-jquery libjs-sphinxdoc libjs-underscore
+  libpython3-dev libpython3.10-dev libstdc++-11-dev lto-disabled-list
+  python3-argcomplete python3-dev python3-dnspython python3-jmespath
+  python3-kerberos python3-libcloud python3-lockfile python3-netaddr
+  python3-ntlm-auth python3-pip python3-pycryptodome python3-requests-kerberos
+  python3-requests-ntlm python3-requests-toolbelt python3-selinux
+  python3-simplejson python3-wheel python3-winrm python3-xmltodict
+  python3.10-dev zlib1g-dev
+0 upgraded, 44 newly installed, 0 to remove and 0 not upgraded.
+Need to get 45.3 MB of archives.
+After this operation, 329 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-pycryptodome amd64 3.11.0+dfsg1-3ubuntu0.1 [1029 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-dnspython all 2.1.0-1ubuntu1 [123 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 ieee-data all 20210605.1 [1887 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-netaddr all 0.8.0-2 [309 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy/universe amd64 ansible all 2.10.7+merged+base+2.10.8+dfsg-1 [17.5 MB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.2 [2101 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.4.0-1ubuntu1~22.04.2 [11.4 MB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+Get:9 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.6 [237 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.6 [922 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+Get:14 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy/main amd64 javascript-common all 11+nmu1 [5936 B]
+Get:17 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1-dev amd64 2.4.7-1ubuntu0.6 [148 kB]
+Get:21 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+Get:22 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjs-jquery all 3.6.0+dfsg+~3.5.13-1 [321 kB]
+Get:23 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjs-underscore all 1.13.2~dfsg-2 [118 kB]
+Get:24 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjs-sphinxdoc all 4.3.2-1 [139 kB]
+Get:25 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [164 kB]
+Get:26 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-dev amd64 3.10.12-1~22.04.12 [4763 kB]
+Get:27 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-dev amd64 3.10.6-1~22.04.1 [7064 B]
+Get:28 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-argcomplete all 1.8.1-1.5 [27.2 kB]
+Get:29 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-dev amd64 3.10.12-1~22.04.12 [508 kB]
+Get:30 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-dev amd64 3.10.6-1~22.04.1 [26.0 kB]
+Get:31 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-jmespath all 0.10.0-1 [21.7 kB]
+Get:32 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-kerberos amd64 1.1.14-3.1build5 [23.0 kB]
+Get:33 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-lockfile all 1:0.12.2-2.2 [14.6 kB]
+Get:34 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-simplejson amd64 3.17.6-1build1 [54.7 kB]
+Get:35 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-libcloud all 3.2.0-2 [1554 kB]
+Get:36 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-ntlm-auth all 1.4.0-1 [20.4 kB]
+Get:37 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
+Get:38 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
+Get:39 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-requests-kerberos all 0.12.0-2 [11.9 kB]
+Get:40 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-requests-ntlm all 1.1.0-1.1 [6160 B]
+Get:41 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-requests-toolbelt all 0.9.1-1 [38.0 kB]
+Get:42 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-selinux amd64 3.3-1build2 [159 kB]
+Get:43 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-xmltodict all 0.12.0-2 [12.6 kB]
+Get:44 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-winrm all 0.3.0-2 [21.7 kB]
+Fetched 45.3 MB in 21s (2169 kB/s)
+Selecting previously unselected package python3-pycryptodome.
+(Reading database ... 69396 files and directories currently installed.)
+Preparing to unpack .../00-python3-pycryptodome_3.11.0+dfsg1-3ubuntu0.1_amd64.deb ...
+Unpacking python3-pycryptodome (3.11.0+dfsg1-3ubuntu0.1) ...
+Selecting previously unselected package python3-dnspython.
+Preparing to unpack .../01-python3-dnspython_2.1.0-1ubuntu1_all.deb ...
+Unpacking python3-dnspython (2.1.0-1ubuntu1) ...
+Selecting previously unselected package ieee-data.
+Preparing to unpack .../02-ieee-data_20210605.1_all.deb ...
+Unpacking ieee-data (20210605.1) ...
+Selecting previously unselected package python3-netaddr.
+Preparing to unpack .../03-python3-netaddr_0.8.0-2_all.deb ...
+Unpacking python3-netaddr (0.8.0-2) ...
+Selecting previously unselected package ansible.
+Preparing to unpack .../04-ansible_2.10.7+merged+base+2.10.8+dfsg-1_all.deb ...
+Unpacking ansible (2.10.7+merged+base+2.10.8+dfsg-1) ...
+Selecting previously unselected package libstdc++-11-dev:amd64.
+Preparing to unpack .../05-libstdc++-11-dev_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package g++-11.
+Preparing to unpack .../06-g++-11_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+Unpacking g++-11 (11.4.0-1ubuntu1~22.04.2) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../07-g++_4%3a11.2.0-1ubuntu1_amd64.deb ...
+Unpacking g++ (4:11.2.0-1ubuntu1) ...
+Selecting previously unselected package libdpkg-perl.
+Preparing to unpack .../08-libdpkg-perl_1.21.1ubuntu2.6_all.deb ...
+Unpacking libdpkg-perl (1.21.1ubuntu2.6) ...
+Selecting previously unselected package bzip2.
+Preparing to unpack .../09-bzip2_1.0.8-5build1_amd64.deb ...
+Unpacking bzip2 (1.0.8-5build1) ...
+Selecting previously unselected package lto-disabled-list.
+Preparing to unpack .../10-lto-disabled-list_24_all.deb ...
+Unpacking lto-disabled-list (24) ...
+Selecting previously unselected package dpkg-dev.
+Preparing to unpack .../11-dpkg-dev_1.21.1ubuntu2.6_all.deb ...
+Unpacking dpkg-dev (1.21.1ubuntu2.6) ...
+Selecting previously unselected package build-essential.
+Preparing to unpack .../12-build-essential_12.9ubuntu3_amd64.deb ...
+Unpacking build-essential (12.9ubuntu3) ...
+Selecting previously unselected package libfakeroot:amd64.
+Preparing to unpack .../13-libfakeroot_1.28-1ubuntu1_amd64.deb ...
+Unpacking libfakeroot:amd64 (1.28-1ubuntu1) ...
+Selecting previously unselected package fakeroot.
+Preparing to unpack .../14-fakeroot_1.28-1ubuntu1_amd64.deb ...
+Unpacking fakeroot (1.28-1ubuntu1) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../15-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libalgorithm-diff-perl.
+Preparing to unpack .../16-libalgorithm-diff-perl_1.201-1_all.deb ...
+Unpacking libalgorithm-diff-perl (1.201-1) ...
+Selecting previously unselected package libalgorithm-diff-xs-perl.
+Preparing to unpack .../17-libalgorithm-diff-xs-perl_0.04-6build3_amd64.deb ...
+Unpacking libalgorithm-diff-xs-perl (0.04-6build3) ...
+Selecting previously unselected package libalgorithm-merge-perl.
+Preparing to unpack .../18-libalgorithm-merge-perl_0.08-3_all.deb ...
+Unpacking libalgorithm-merge-perl (0.08-3) ...
+Selecting previously unselected package libexpat1-dev:amd64.
+Preparing to unpack .../19-libexpat1-dev_2.4.7-1ubuntu0.6_amd64.deb ...
+Unpacking libexpat1-dev:amd64 (2.4.7-1ubuntu0.6) ...
+Selecting previously unselected package libfile-fcntllock-perl.
+Preparing to unpack .../20-libfile-fcntllock-perl_0.22-3build7_amd64.deb ...
+Unpacking libfile-fcntllock-perl (0.22-3build7) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../21-libjs-jquery_3.6.0+dfsg+~3.5.13-1_all.deb ...
+Unpacking libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../22-libjs-underscore_1.13.2~dfsg-2_all.deb ...
+Unpacking libjs-underscore (1.13.2~dfsg-2) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../23-libjs-sphinxdoc_4.3.2-1_all.deb ...
+Unpacking libjs-sphinxdoc (4.3.2-1) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../24-zlib1g-dev_1%3a1.2.11.dfsg-2ubuntu9.2_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Selecting previously unselected package libpython3.10-dev:amd64.
+Preparing to unpack .../25-libpython3.10-dev_3.10.12-1~22.04.12_amd64.deb ...
+Unpacking libpython3.10-dev:amd64 (3.10.12-1~22.04.12) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../26-libpython3-dev_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.10.6-1~22.04.1) ...
+Selecting previously unselected package python3-argcomplete.
+Preparing to unpack .../27-python3-argcomplete_1.8.1-1.5_all.deb ...
+Unpacking python3-argcomplete (1.8.1-1.5) ...
+Selecting previously unselected package python3.10-dev.
+Preparing to unpack .../28-python3.10-dev_3.10.12-1~22.04.12_amd64.deb ...
+Unpacking python3.10-dev (3.10.12-1~22.04.12) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../29-python3-dev_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3-dev (3.10.6-1~22.04.1) ...
+Selecting previously unselected package python3-jmespath.
+Preparing to unpack .../30-python3-jmespath_0.10.0-1_all.deb ...
+Unpacking python3-jmespath (0.10.0-1) ...
+Selecting previously unselected package python3-kerberos.
+Preparing to unpack .../31-python3-kerberos_1.1.14-3.1build5_amd64.deb ...
+Unpacking python3-kerberos (1.1.14-3.1build5) ...
+Selecting previously unselected package python3-lockfile.
+Preparing to unpack .../32-python3-lockfile_1%3a0.12.2-2.2_all.deb ...
+Unpacking python3-lockfile (1:0.12.2-2.2) ...
+Selecting previously unselected package python3-simplejson.
+Preparing to unpack .../33-python3-simplejson_3.17.6-1build1_amd64.deb ...
+Unpacking python3-simplejson (3.17.6-1build1) ...
+Selecting previously unselected package python3-libcloud.
+Preparing to unpack .../34-python3-libcloud_3.2.0-2_all.deb ...
+Unpacking python3-libcloud (3.2.0-2) ...
+Selecting previously unselected package python3-ntlm-auth.
+Preparing to unpack .../35-python3-ntlm-auth_1.4.0-1_all.deb ...
+Unpacking python3-ntlm-auth (1.4.0-1) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../36-python3-wheel_0.37.1-2ubuntu0.22.04.1_all.deb ...
+Unpacking python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../37-python3-pip_22.0.2+dfsg-1ubuntu0.7_all.deb ...
+Unpacking python3-pip (22.0.2+dfsg-1ubuntu0.7) ...
+Selecting previously unselected package python3-requests-kerberos.
+Preparing to unpack .../38-python3-requests-kerberos_0.12.0-2_all.deb ...
+Unpacking python3-requests-kerberos (0.12.0-2) ...
+Selecting previously unselected package python3-requests-ntlm.
+Preparing to unpack .../39-python3-requests-ntlm_1.1.0-1.1_all.deb ...
+Unpacking python3-requests-ntlm (1.1.0-1.1) ...
+Selecting previously unselected package python3-requests-toolbelt.
+Preparing to unpack .../40-python3-requests-toolbelt_0.9.1-1_all.deb ...
+Unpacking python3-requests-toolbelt (0.9.1-1) ...
+Selecting previously unselected package python3-selinux.
+Preparing to unpack .../41-python3-selinux_3.3-1build2_amd64.deb ...
+Unpacking python3-selinux (3.3-1build2) ...
+Selecting previously unselected package python3-xmltodict.
+Preparing to unpack .../42-python3-xmltodict_0.12.0-2_all.deb ...
+Unpacking python3-xmltodict (0.12.0-2) ...
+Selecting previously unselected package python3-winrm.
+Preparing to unpack .../43-python3-winrm_0.3.0-2_all.deb ...
+Unpacking python3-winrm (0.3.0-2) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-lockfile (1:0.12.2-2.2) ...
+Setting up lto-disabled-list (24) ...
+Setting up python3-requests-toolbelt (0.9.1-1) ...
+Setting up libfile-fcntllock-perl (0.22-3build7) ...
+Setting up libalgorithm-diff-perl (1.201-1) ...
+Setting up python3-ntlm-auth (1.4.0-1) ...
+Setting up python3-pycryptodome (3.11.0+dfsg1-3ubuntu0.1) ...
+Setting up python3-kerberos (1.1.14-3.1build5) ...
+Setting up bzip2 (1.0.8-5build1) ...
+Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+Setting up fakeroot (1.28-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up python3-simplejson (3.17.6-1build1) ...
+Setting up python3-xmltodict (0.12.0-2) ...
+Setting up libexpat1-dev:amd64 (2.4.7-1ubuntu0.6) ...
+Setting up python3-jmespath (0.10.0-1) ...
+Setting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...
+Setting up libdpkg-perl (1.21.1ubuntu2.6) ...
+Setting up libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Setting up python3-requests-kerberos (0.12.0-2) ...
+Setting up ieee-data (20210605.1) ...
+Setting up python3-dnspython (2.1.0-1ubuntu1) ...
+Setting up python3-selinux (3.3-1build2) ...
+Setting up libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Setting up python3-argcomplete (1.8.1-1.5) ...
+Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+Setting up libjs-underscore (1.13.2~dfsg-2) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up python3-requests-ntlm (1.1.0-1.1) ...
+Setting up g++-11 (11.4.0-1ubuntu1~22.04.2) ...
+Setting up python3-libcloud (3.2.0-2) ...
+Setting up dpkg-dev (1.21.1ubuntu2.6) ...
+Setting up libpython3.10-dev:amd64 (3.10.12-1~22.04.12) ...
+Setting up libjs-sphinxdoc (4.3.2-1) ...
+Setting up python3.10-dev (3.10.12-1~22.04.12) ...
+Setting up g++ (4:11.2.0-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up python3-netaddr (0.8.0-2) ...
+Setting up build-essential (12.9ubuntu3) ...
+Setting up python3-winrm (0.3.0-2) ...
+Setting up ansible (2.10.7+merged+base+2.10.8+dfsg-1) ...
+Setting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-dev (3.10.6-1~22.04.1) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.11) ...
+
+Running kernel seems to be up-to-date.
+
+                                      No services need to be restarted.
+
+                                                                       No containers need to be restarted.
+
+                                                                                                          No user sessions are running outdated binaries.
+
+                                                                                                                                                         No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                                                                                                                                                                                                                                   Requirement already satisfied: pip in /usr/lib/python3/dist-packages (22.0.2)
+Collecting pip
+  Downloading pip-25.3-py3-none-any.whl (1.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 2.3 MB/s eta 0:00:00
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 22.0.2
+    Not uninstalling pip at /usr/lib/python3/dist-packages, outside environment /usr
+    Can't uninstall 'pip'. No files were found to uninstall.
+Successfully installed pip-25.3
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Collecting kubernetes
+  Downloading kubernetes-34.1.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Requirement already satisfied: jsonpatch in /usr/lib/python3/dist-packages (1.32)
+Collecting openshift
+  Downloading openshift-0.13.2-py3-none-any.whl.metadata (964 bytes)
+Requirement already satisfied: certifi>=14.05.14 in /usr/lib/python3/dist-packages (from kubernetes) (2020.6.20)
+Requirement already satisfied: six>=1.9.0 in /usr/lib/python3/dist-packages (from kubernetes) (1.16.0)
+Collecting python-dateutil>=2.5.3 (from kubernetes)
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Requirement already satisfied: pyyaml>=5.4.1 in /usr/lib/python3/dist-packages (from kubernetes) (5.4.1)
+Collecting google-auth>=1.0.1 (from kubernetes)
+  Downloading google_auth-2.45.0-py2.py3-none-any.whl.metadata (6.8 kB)
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes)
+  Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
+Requirement already satisfied: requests in /usr/lib/python3/dist-packages (from kubernetes) (2.25.1)
+Collecting requests-oauthlib (from kubernetes)
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+Requirement already satisfied: urllib3<2.4.0,>=1.24.2 in /usr/lib/python3/dist-packages (from kubernetes) (1.26.5)
+Collecting durationpy>=0.7 (from kubernetes)
+  Downloading durationpy-0.10-py3-none-any.whl.metadata (340 bytes)
+Collecting python-string-utils (from openshift)
+  Downloading python_string_utils-1.0.0-py3-none-any.whl.metadata (12 kB)
+Collecting cachetools<7.0,>=2.0.0 (from google-auth>=1.0.1->kubernetes)
+  Downloading cachetools-6.2.4-py3-none-any.whl.metadata (5.6 kB)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in /usr/lib/python3/dist-packages (from google-auth>=1.0.1->kubernetes) (0.2.1)
+Collecting rsa<5,>=3.1.4 (from google-auth>=1.0.1->kubernetes)
+  Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+Requirement already satisfied: pyasn1>=0.1.3 in /usr/lib/python3/dist-packages (from rsa<5,>=3.1.4->google-auth>=1.0.1->kubernetes) (0.4.8)
+Requirement already satisfied: oauthlib>=3.0.0 in /usr/lib/python3/dist-packages (from requests-oauthlib->kubernetes) (3.2.0)
+Downloading kubernetes-34.1.0-py2.py3-none-any.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 4.3 MB/s  0:00:00
+Downloading openshift-0.13.2-py3-none-any.whl (18 kB)
+Downloading durationpy-0.10-py3-none-any.whl (3.9 kB)
+Downloading google_auth-2.45.0-py2.py3-none-any.whl (233 kB)
+Downloading cachetools-6.2.4-py3-none-any.whl (11 kB)
+Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
+Downloading python_string_utils-1.0.0-py3-none-any.whl (26 kB)
+Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Installing collected packages: durationpy, websocket-client, rsa, requests-oauthlib, python-string-utils, python-dateutil, cachetools, google-auth, kubernetes, openshift
+
+Successfully installed cachetools-6.2.4 durationpy-0.10 google-auth-2.45.0 kubernetes-34.1.0 openshift-0.13.2 python-dateutil-2.9.0.post0 python-string-utils-1.0.0 requests-oauthlib-2.0.0 rsa-4.9.1 websocket-client-1.9.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+Starting galaxy collection install process
+Process install dependency map
+Starting collection install process
+Installing 'kubernetes.core:6.2.0' to '/home/ubuntu/.ansible/collections/ansible_collections/kubernetes/core'
+Downloading https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/kubernetes-core-6.2.0.tar.gz to /home/ubuntu/.ansible/tmp/ansible-local-5296wdnpznnk/tmp9hqezc1_
+kubernetes.core (6.2.0) was installed successfully
+=== [6/12] Bootstrapping Management Cluster ===
+I1218 11:21:07.596007    5314 version.go:256] remote version is much newer: v1.35.0; falling back to: stable-1.30
+[init] Using Kubernetes version: v1.30.14
+[preflight] Running pre-flight checks
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+W1218 11:21:08.354840    5314 checks.go:844] detected that the sandbox image "registry.k8s.io/pause:3.8" of the container runtime is inconsistent with that used by kubeadm.It is recommended to use "registry.k8s.io/pause:3.9" as the CRI sandbox image.
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local mgmt-1] and IPs [10.96.0.1 10.204.86.140]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [localhost mgmt-1] and IPs [10.204.86.140 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [localhost mgmt-1] and IPs [10.204.86.140 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "super-admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Starting the kubelet
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests"
+[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+[kubelet-check] The kubelet is healthy after 1.002003691s
+[api-check] Waiting for a healthy API server. This can take up to 4m0s
+[api-check] The API server is healthy after 9.503451128s
+[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
+[upload-certs] Skipping phase. Please see --upload-certs
+[mark-control-plane] Marking the node mgmt-1 as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
+[mark-control-plane] Marking the node mgmt-1 as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
+[bootstrap-token] Using token: 3zzhbj.9qv6bwaxf35k4yz5
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.204.86.140:6443 --token 3zzhbj.9qv6bwaxf35k4yz5 \
+	--discovery-token-ca-cert-hash sha256:9e662e53c77fcc90947897f1ea7c4b7c100d1a9a1bdd1426a139ea3e958adbd7 
+node/mgmt-1 untainted
+namespace/kube-flannel created
+serviceaccount/flannel created
+clusterrole.rbac.authorization.k8s.io/flannel created
+clusterrolebinding.rbac.authorization.k8s.io/flannel created
+configmap/kube-flannel-cfg created
+daemonset.apps/kube-flannel-ds created
+Waiting for node to be Ready...
+node/mgmt-1 condition met
+=== [7/12] Installing Storage & Cert Manager ===
+namespace/local-path-storage created
+serviceaccount/local-path-provisioner-service-account created
+clusterrole.rbac.authorization.k8s.io/local-path-provisioner-role created
+clusterrolebinding.rbac.authorization.k8s.io/local-path-provisioner-bind created
+deployment.apps/local-path-provisioner created
+storageclass.storage.k8s.io/local-path created
+configmap/local-path-config created
+storageclass.storage.k8s.io/local-path patched
+namespace/cert-manager created
+customresourcedefinition.apiextensions.k8s.io/certificaterequests.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/certificates.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/challenges.acme.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/issuers.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/orders.acme.cert-manager.io created
+serviceaccount/cert-manager-cainjector created
+serviceaccount/cert-manager created
+serviceaccount/cert-manager-webhook created
+clusterrole.rbac.authorization.k8s.io/cert-manager-cainjector created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-issuers created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-clusterissuers created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-certificates created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-orders created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-challenges created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-ingress-shim created
+clusterrole.rbac.authorization.k8s.io/cert-manager-cluster-view created
+clusterrole.rbac.authorization.k8s.io/cert-manager-view created
+clusterrole.rbac.authorization.k8s.io/cert-manager-edit created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-approve:cert-manager-io created
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-certificatesigningrequests created
+clusterrole.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-cainjector created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-issuers created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-clusterissuers created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-certificates created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-orders created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-challenges created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-ingress-shim created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-approve:cert-manager-io created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-certificatesigningrequests created
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews created
+role.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection created
+role.rbac.authorization.k8s.io/cert-manager:leaderelection created
+role.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving created
+rolebinding.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection created
+rolebinding.rbac.authorization.k8s.io/cert-manager:leaderelection created
+rolebinding.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving created
+service/cert-manager created
+service/cert-manager-webhook created
+deployment.apps/cert-manager-cainjector created
+deployment.apps/cert-manager created
+deployment.apps/cert-manager-webhook created
+mutatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook created
+validatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook created
+Waiting for cert-manager pods...
+pod/cert-manager-5fcfc99f7-btsdv condition met
+pod/cert-manager-cainjector-75cfc9f6b7-gdlx5 condition met
+pod/cert-manager-webhook-74b65dbf6f-g4gt8 condition met
+=== [8/12] Building BYOH Agent & Controller Locally ===
+Cloning BYOH repository (Tag v0.5.0)...
+Cloning into '/home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/cluster-api-provider-bringyourownhost'...
+Note: switching to '1ee488c8f386e67a90e96aa3bc265db64d94ab5c'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+Entering Submodule Directory: /home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/cluster-api-provider-bringyourownhost
+Applying patch from /home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/byoh_changes.patch...
+/home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/byoh_changes.patch:22: trailing whitespace.
+		
+/home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/byoh_changes.patch:65: trailing whitespace.
+        
+warning: 2 lines add whitespace errors.
+Patch applied successfully.
+Checking Go version...
+Go not found. Will install.
+Downloading and Installing Go 1.21.6...
+Using Go version: go version go1.21.6 linux/amd64
+Building Agent binary...
+go: downloading github.com/spf13/pflag v1.0.5
+go: downloading github.com/go-logr/logr v1.2.3
+go: downloading k8s.io/api v0.26.1
+go: downloading k8s.io/apimachinery v0.26.1
+go: downloading k8s.io/client-go v0.26.1
+go: downloading k8s.io/klog/v2 v2.80.1
+go: downloading sigs.k8s.io/cluster-api v1.4.4
+go: downloading sigs.k8s.io/controller-runtime v0.14.5
+go: downloading github.com/kube-vip/kube-vip v0.5.5
+go: downloading github.com/pkg/errors v0.9.1
+go: downloading k8s.io/component-base v0.26.1
+go: downloading sigs.k8s.io/yaml v1.3.0
+go: downloading github.com/jackpal/gateway v1.0.7
+go: downloading github.com/gogo/protobuf v1.3.2
+go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.2.3
+go: downloading github.com/evanphx/json-patch/v5 v5.6.0
+go: downloading github.com/evanphx/json-patch v5.6.0+incompatible
+go: downloading github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
+go: downloading k8s.io/utils v0.0.0-20221128185143-99ec85e7a448
+go: downloading github.com/prometheus/client_golang v1.14.0
+go: downloading golang.org/x/net v0.17.0
+go: downloading github.com/coreos/go-iptables v0.6.0
+go: downloading github.com/florianl/go-conntrack v0.3.0
+go: downloading github.com/harvester/dhcp v0.0.0-20220421024905-28b38eafefe3
+go: downloading github.com/jpillora/backoff v1.0.0
+go: downloading github.com/mdlayher/ndp v0.10.0
+go: downloading github.com/sirupsen/logrus v1.9.0
+go: downloading github.com/vishvananda/netlink v1.1.1-0.20210330154013-f5de75959ad5
+go: downloading golang.org/x/sys v0.15.0
+go: downloading github.com/google/gofuzz v1.2.0
+go: downloading github.com/imdario/mergo v0.3.13
+go: downloading golang.org/x/term v0.15.0
+go: downloading gomodules.xyz/jsonpatch/v2 v2.2.0
+go: downloading gopkg.in/yaml.v2 v2.4.0
+go: downloading sigs.k8s.io/json v0.0.0-20220713155537-f223a00ba0e2
+go: downloading golang.org/x/time v0.3.0
+go: downloading k8s.io/kube-openapi v0.0.0-20221012153701-172d655c2280
+go: downloading github.com/json-iterator/go v1.1.12
+go: downloading gopkg.in/inf.v0 v0.9.1
+go: downloading k8s.io/apiextensions-apiserver v0.26.1
+go: downloading github.com/google/go-cmp v0.5.9
+go: downloading github.com/onsi/gomega v1.27.5
+go: downloading github.com/davecgh/go-spew v1.1.1
+go: downloading golang.org/x/oauth2 v0.6.0
+go: downloading github.com/prometheus/client_model v0.3.0
+go: downloading github.com/prometheus/common v0.37.0
+go: downloading github.com/mdlayher/netlink v1.6.0
+go: downloading github.com/golang/protobuf v1.5.3
+go: downloading github.com/google/gnostic v0.6.9
+go: downloading github.com/vishvananda/netns v0.0.0-20211101163701-50045581ed74
+go: downloading github.com/fsnotify/fsnotify v1.6.0
+go: downloading gitlab.com/golang-commonmark/puny v0.0.0-20191124015043-9f83538fa04f
+go: downloading github.com/u-root/uio v0.0.0-20220204230159-dac05f7d2cb4
+go: downloading github.com/mdlayher/arp v0.0.0-20191213142603-f72070a231fc
+go: downloading github.com/mdlayher/ethernet v0.0.0-20190606142754-0394541c37b7
+go: downloading github.com/mdlayher/raw v0.0.0-20211126142749-4eae47f3d54b
+go: downloading github.com/blang/semver v3.5.1+incompatible
+go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+go: downloading github.com/modern-go/reflect2 v1.0.2
+go: downloading github.com/google/uuid v1.3.0
+go: downloading github.com/beorn7/perks v1.0.1
+go: downloading github.com/cespare/xxhash/v2 v2.1.2
+go: downloading github.com/prometheus/procfs v0.8.0
+go: downloading google.golang.org/protobuf v1.29.1
+go: downloading gopkg.in/yaml.v3 v3.0.1
+go: downloading github.com/emicklei/go-restful/v3 v3.9.0
+go: downloading github.com/go-openapi/jsonreference v0.20.0
+go: downloading github.com/go-openapi/swag v0.22.3
+go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.4
+go: downloading golang.org/x/text v0.14.0
+go: downloading github.com/blang/semver/v4 v4.0.0
+go: downloading github.com/josharian/native v1.0.0
+go: downloading github.com/mdlayher/socket v0.2.3
+go: downloading github.com/gobuffalo/flect v1.0.2
+go: downloading github.com/go-openapi/jsonpointer v0.19.5
+go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+go: downloading github.com/mailru/easyjson v0.7.7
+go: downloading golang.org/x/sync v0.2.0
+go: downloading github.com/josharian/intern v1.0.0
+SUCCESS: Agent binary built at /home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/byoh-host-agent
+Building Controller Docker Image: byoh-controller:local
+docker build -t byoh-controller:local .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  44.67MB
+Step 1/16 : FROM golang:1.20.7 as builder
+1.20.7: Pulling from library/golang
+de4cac68b616: Pulling fs layer
+d31b0195ec5f: Pulling fs layer
+9b1fd34c30b7: Pulling fs layer
+2f744fb50e06: Pulling fs layer
+b52656edd44a: Pulling fs layer
+aa839e0869ff: Pulling fs layer
+aa839e0869ff: Waiting
+b52656edd44a: Waiting
+2f744fb50e06: Waiting
+d31b0195ec5f: Verifying Checksum
+d31b0195ec5f: Download complete
+9b1fd34c30b7: Verifying Checksum
+9b1fd34c30b7: Download complete
+2f744fb50e06: Verifying Checksum
+2f744fb50e06: Download complete
+aa839e0869ff: Verifying Checksum
+aa839e0869ff: Download complete
+de4cac68b616: Verifying Checksum
+de4cac68b616: Download complete
+b52656edd44a: Verifying Checksum
+b52656edd44a: Download complete
+de4cac68b616: Pull complete
+d31b0195ec5f: Pull complete
+9b1fd34c30b7: Pull complete
+2f744fb50e06: Pull complete
+b52656edd44a: Pull complete
+aa839e0869ff: Pull complete
+Digest: sha256:741d6f9bcab778441efe05c8e4369d4f8ff56c9a635a97d77f55d8b0ec62f907
+Status: Downloaded newer image for golang:1.20.7
+ ---> 57c3df3716e1
+Step 2/16 : WORKDIR /workspace
+ ---> Running in 594452f72ad8
+ ---> Removed intermediate container 594452f72ad8
+ ---> 1b79e7e825ae
+Step 3/16 : COPY go.mod go.mod
+ ---> fa6cf252f5c6
+Step 4/16 : COPY go.sum go.sum
+ ---> 482445d4f023
+Step 5/16 : RUN go mod download
+ ---> Running in b4b5ac0b5e1a
+ ---> Removed intermediate container b4b5ac0b5e1a
+ ---> ba86a54e13aa
+Step 6/16 : COPY main.go main.go
+ ---> 82e60b5350be
+Step 7/16 : COPY apis/ apis/
+ ---> b2db2d77b15a
+Step 8/16 : COPY controllers/ controllers/
+ ---> 336a2707d558
+Step 9/16 : COPY installer/ installer/
+ ---> 59ea182edff9
+Step 10/16 : COPY common/ common/
+ ---> 4de386b75b97
+Step 11/16 : RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager main.go
+ ---> Running in 8c5c1153bcb5
+ ---> Removed intermediate container 8c5c1153bcb5
+ ---> 9836cbb9f062
+Step 12/16 : FROM gcr.io/distroless/static:nonroot
+nonroot: Pulling from distroless/static
+fd4aa3667332: Pulling fs layer
+bfb59b82a9b6: Pulling fs layer
+017886f7e176: Pulling fs layer
+62de241dac5f: Pulling fs layer
+2780920e5dbf: Pulling fs layer
+7c12895b777b: Pulling fs layer
+3214acf345c0: Pulling fs layer
+52630fc75a18: Pulling fs layer
+dd64bf2dd177: Pulling fs layer
+4aa0ea1413d3: Pulling fs layer
+dcaa5a89b0cc: Pulling fs layer
+069d1e267530: Pulling fs layer
+7c12895b777b: Waiting
+3214acf345c0: Waiting
+52630fc75a18: Waiting
+dd64bf2dd177: Waiting
+4aa0ea1413d3: Waiting
+069d1e267530: Waiting
+2780920e5dbf: Waiting
+dcaa5a89b0cc: Waiting
+62de241dac5f: Waiting
+bfb59b82a9b6: Verifying Checksum
+bfb59b82a9b6: Download complete
+fd4aa3667332: Verifying Checksum
+fd4aa3667332: Download complete
+017886f7e176: Verifying Checksum
+017886f7e176: Download complete
+fd4aa3667332: Pull complete
+bfb59b82a9b6: Pull complete
+2780920e5dbf: Download complete
+7c12895b777b: Verifying Checksum
+7c12895b777b: Download complete
+62de241dac5f: Verifying Checksum
+62de241dac5f: Download complete
+3214acf345c0: Verifying Checksum
+3214acf345c0: Download complete
+52630fc75a18: Verifying Checksum
+52630fc75a18: Download complete
+dd64bf2dd177: Download complete
+017886f7e176: Pull complete
+62de241dac5f: Pull complete
+4aa0ea1413d3: Verifying Checksum
+4aa0ea1413d3: Download complete
+dcaa5a89b0cc: Verifying Checksum
+dcaa5a89b0cc: Download complete
+2780920e5dbf: Pull complete
+7c12895b777b: Pull complete
+3214acf345c0: Pull complete
+52630fc75a18: Pull complete
+dd64bf2dd177: Pull complete
+4aa0ea1413d3: Pull complete
+069d1e267530: Verifying Checksum
+069d1e267530: Download complete
+dcaa5a89b0cc: Pull complete
+069d1e267530: Pull complete
+Digest: sha256:2b7c93f6d6648c11f0e80a48558c8f77885eb0445213b8e69a6a0d7c89fc6ae4
+Status: Downloaded newer image for gcr.io/distroless/static:nonroot
+ ---> caf5a62f4ea6
+Step 13/16 : WORKDIR /
+ ---> Running in 6f12e6119254
+ ---> Removed intermediate container 6f12e6119254
+ ---> ab33e968763d
+Step 14/16 : COPY --from=builder /workspace/manager .
+ ---> c6c61b57ceec
+Step 15/16 : USER 65532:65532
+ ---> Running in 489d3e85dfaf
+ ---> Removed intermediate container 489d3e85dfaf
+ ---> 30959110e704
+Step 16/16 : ENTRYPOINT ["/manager"]
+ ---> Running in 71f48e6d0c6f
+ ---> Removed intermediate container 71f48e6d0c6f
+ ---> eb4fc2c3d52c
+Successfully built eb4fc2c3d52c
+Successfully tagged byoh-controller:local
+Importing Docker image into Kubernetes (containerd)...
+unpacking docker.io/library/byoh-controller:local (sha256:55a4090ffa0d157191641b8ebc836c187b78ed42d27f84003a5af6c55abe4358)...done
+Cleaning up temporary image file...
+Controller Image 'byoh-controller:local' is now available to the cluster.
+=== [9/12] Installing Tools (Helm, Clusterctl) ===
+Downloading https://get.helm.sh/helm-v3.19.4-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 80.8M  100 80.8M    0     0  19.1M      0  0:00:04  0:00:04 --:--:-- 24.3M
+=== [10/12] Initializing CAPI with BYOH Provider ===
+Fetching providers
+Skipping installing cert-manager as it is already installed
+Installing Provider="cluster-api" Version="v1.10.9" TargetNamespace="capi-system"
+Installing Provider="bootstrap-kubeadm" Version="v1.10.9" TargetNamespace="capi-kubeadm-bootstrap-system"
+Installing Provider="control-plane-kubeadm" Version="v1.10.9" TargetNamespace="capi-kubeadm-control-plane-system"
+Installing Provider="infrastructure-byoh" Version="v0.5.0" TargetNamespace="byoh-system"
+
+Your management cluster has been initialized successfully!
+
+You can now create your first workload cluster by running the following:
+
+  clusterctl generate cluster [name] --kubernetes-version [version] | kubectl apply -f -
+
+Waiting for BYOH Deployment...
+Waiting for deployment "byoh-controller-manager" rollout to finish: 0 of 1 updated replicas are available...
+error: timed out waiting for the condition
+Updating BYOH Controller to Local Image: byoh-controller:local
+deployment.apps/byoh-controller-manager image updated
+deployment.apps/byoh-controller-manager patched
+Waiting for deployment "byoh-controller-manager" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "byoh-controller-manager" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "byoh-controller-manager" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "byoh-controller-manager" rollout to finish: 1 old replicas are pending termination...
+deployment "byoh-controller-manager" successfully rolled out
+Patching permissions for BYOH...
+clusterrole.rbac.authorization.k8s.io/byoh-byohost-editor-role patched
+=== [11/12] Installing Devtron ===
+"devtron" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "devtron" chart repository
+Update Complete. ⎈Happy Helming!⎈
+Installing Devtron Operator...
+NAME: devtron
+LAST DEPLOYED: Thu Dec 18 11:30:12 2025
+NAMESPACE: devtroncd
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Please wait for ~1 minute before running any of the following commands.
+
+1. Run the following command to get the password for the default admin user:
+
+   kubectl -n devtroncd get secret devtron-secret -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d
+2. Run the following commands to get the dashboard URL for the service type:
+   NodePort
+
+   a. export nodeport=$(kubectl get svc -n devtroncd devtron-service -o jsonpath="{.spec.ports[0].nodePort}")
+   
+   b. Run the following command to get Devtron dashboard URL: echo http://HOST_IP:$nodeport/dashboard
+
+   Make sure that your security settings allow incoming connection to your Host machine on the nodeport mentioned.
+
+Facing issues? Reach out to our team on Discord https://discord.devtron.ai for immediate assistance!
+Waiting for Devtron Dashboard Service to be ready...
+Devtron Dashboard is ready at: http://10.204.86.140:31458/dashboard
+=== [12/14] Building O2IMS Operator ===
+Building O2IMS operator image...
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  55.81kB
+Step 1/8 : FROM python:3.11-slim
+3.11-slim: Pulling from library/python
+1733a4cd5954: Pulling fs layer
+72cf4c3b8301: Pulling fs layer
+4d55cfecf366: Pulling fs layer
+3f0cdbca744e: Pulling fs layer
+3f0cdbca744e: Waiting
+72cf4c3b8301: Verifying Checksum
+72cf4c3b8301: Download complete
+3f0cdbca744e: Verifying Checksum
+3f0cdbca744e: Download complete
+4d55cfecf366: Verifying Checksum
+4d55cfecf366: Download complete
+1733a4cd5954: Verifying Checksum
+1733a4cd5954: Download complete
+1733a4cd5954: Pull complete
+72cf4c3b8301: Pull complete
+4d55cfecf366: Pull complete
+3f0cdbca744e: Pull complete
+Digest: sha256:158caf0e080e2cd74ef2879ed3c4e697792ee65251c8208b7afb56683c32ea6c
+Status: Downloaded newer image for python:3.11-slim
+ ---> cb352e69d7b6
+Step 2/8 : WORKDIR /app
+ ---> Running in bc768633eda4
+ ---> Removed intermediate container bc768633eda4
+ ---> 376ee827ca54
+Step 3/8 : COPY requirements.txt .
+ ---> a7db046ec4d3
+Step 4/8 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Running in bcfacb7571c8
+Collecting kopf>=1.36.0 (from -r requirements.txt (line 1))
+  Downloading kopf-1.39.0-py3-none-any.whl.metadata (9.5 kB)
+Collecting kubernetes>=28.0.0 (from -r requirements.txt (line 2))
+  Downloading kubernetes-34.1.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting PyYAML>=6.0 (from -r requirements.txt (line 3))
+  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting python-json-logger (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading python_json_logger-4.0.0-py3-none-any.whl.metadata (4.0 kB)
+Collecting iso8601 (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading iso8601-2.1.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting click>=8.2.0 (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting aiohttp (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading aiohttp-3.13.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.1 kB)
+Collecting certifi>=14.05.14 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading certifi-2025.11.12-py3-none-any.whl.metadata (2.5 kB)
+Collecting six>=1.9.0 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting python-dateutil>=2.5.3 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting google-auth>=1.0.1 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading google_auth-2.45.0-py2.py3-none-any.whl.metadata (6.8 kB)
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting requests (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+Collecting requests-oauthlib (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+Collecting urllib3<2.4.0,>=1.24.2 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading urllib3-2.3.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting durationpy>=0.7 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading durationpy-0.10-py3-none-any.whl.metadata (340 bytes)
+Collecting cachetools<7.0,>=2.0.0 (from google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading cachetools-6.2.4-py3-none-any.whl.metadata (5.6 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting rsa<5,>=3.1.4 (from google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+Collecting aiohappyeyeballs>=2.5.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.4.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting attrs>=17.3.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading attrs-25.4.0-py3-none-any.whl.metadata (10 kB)
+Collecting frozenlist>=1.1.1 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+Collecting multidict<7.0,>=4.5 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading multidict-6.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+Collecting propcache>=0.2.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (13 kB)
+Collecting yarl<2.0,>=1.17.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading yarl-1.22.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (75 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 75.1/75.1 kB 1.5 MB/s eta 0:00:00
+Collecting charset_normalizer<4,>=2 (from requests->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)
+Collecting idna<4,>=2.5 (from requests->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+Collecting oauthlib>=3.0.0 (from requests-oauthlib->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading oauthlib-3.3.1-py3-none-any.whl.metadata (7.9 kB)
+Collecting typing-extensions>=4.2 (from aiosignal>=1.4.0->aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+Downloading kopf-1.39.0-py3-none-any.whl (209 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 209.2/209.2 kB 11.0 MB/s eta 0:00:00
+Downloading kubernetes-34.1.0-py2.py3-none-any.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 47.0 MB/s eta 0:00:00
+Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 111.9 MB/s eta 0:00:00
+Downloading certifi-2025.11.12-py3-none-any.whl (159 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 159.4/159.4 kB 75.7 MB/s eta 0:00:00
+Downloading click-8.3.1-py3-none-any.whl (108 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 80.4 MB/s eta 0:00:00
+Downloading durationpy-0.10-py3-none-any.whl (3.9 kB)
+Downloading google_auth-2.45.0-py2.py3-none-any.whl (233 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.3/233.3 kB 97.3 MB/s eta 0:00:00
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 99.2 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading urllib3-2.3.0-py3-none-any.whl (128 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 128.4/128.4 kB 101.8 MB/s eta 0:00:00
+Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.6/82.6 kB 64.7 MB/s eta 0:00:00
+Downloading aiohttp-3.13.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 2.1 MB/s eta 0:00:00
+Downloading iso8601-2.1.0-py3-none-any.whl (7.5 kB)
+Downloading python_json_logger-4.0.0-py3-none-any.whl (15 kB)
+Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.7/64.7 kB 82.9 MB/s eta 0:00:00
+Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+Downloading attrs-25.4.0-py3-none-any.whl (67 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.6/67.6 kB 72.0 MB/s eta 0:00:00
+Downloading cachetools-6.2.4-py3-none-any.whl (11 kB)
+Downloading charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (151 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151.6/151.6 kB 89.6 MB/s eta 0:00:00
+Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.1/231.1 kB 75.8 MB/s eta 0:00:00
+Downloading idna-3.11-py3-none-any.whl (71 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 61.7 MB/s eta 0:00:00
+Downloading multidict-6.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (246 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.7/246.7 kB 93.7 MB/s eta 0:00:00
+Downloading oauthlib-3.3.1-py3-none-any.whl (160 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 160.1/160.1 kB 110.5 MB/s eta 0:00:00
+Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (210 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 210.0/210.0 kB 133.0 MB/s eta 0:00:00
+Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.3/181.3 kB 92.6 MB/s eta 0:00:00
+Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+Downloading yarl-1.22.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (365 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 365.8/365.8 kB 77.5 MB/s eta 0:00:00
+Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 83.1/83.1 kB 86.0 MB/s eta 0:00:00
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 78.3 MB/s eta 0:00:00
+Installing collected packages: durationpy, websocket-client, urllib3, typing-extensions, six, PyYAML, python-json-logger, pyasn1, propcache, oauthlib, multidict, iso8601, idna, frozenlist, click, charset_normalizer, certifi, cachetools, attrs, aiohappyeyeballs, yarl, rsa, requests, python-dateutil, pyasn1-modules, aiosignal, requests-oauthlib, google-auth, aiohttp, kubernetes, kopf
+Successfully installed PyYAML-6.0.3 aiohappyeyeballs-2.6.1 aiohttp-3.13.2 aiosignal-1.4.0 attrs-25.4.0 cachetools-6.2.4 certifi-2025.11.12 charset_normalizer-3.4.4 click-8.3.1 durationpy-0.10 frozenlist-1.8.0 google-auth-2.45.0 idna-3.11 iso8601-2.1.0 kopf-1.39.0 kubernetes-34.1.0 multidict-6.7.0 oauthlib-3.3.1 propcache-0.4.1 pyasn1-0.6.1 pyasn1-modules-0.4.2 python-dateutil-2.9.0.post0 python-json-logger-4.0.0 requests-2.32.5 requests-oauthlib-2.0.0 rsa-4.9.1 six-1.17.0 typing-extensions-4.15.0 urllib3-2.3.0 websocket-client-1.9.0 yarl-1.22.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 24.0 -> 25.3
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container bcfacb7571c8
+ ---> 5b81bb5add22
+Step 5/8 : COPY controllers/ ./controllers/
+ ---> aae5a0504441
+Step 6/8 : COPY utils/ ./utils/
+ ---> 01d8fc7b9121
+Step 7/8 : ENV PYTHONPATH=/app
+ ---> Running in 53808129ebda
+ ---> Removed intermediate container 53808129ebda
+ ---> 0625309ddcbd
+Step 8/8 : CMD ["kopf", "run", "--standalone", "--liveness=http://0.0.0.0:8080/healthz", "controllers/provisioning_request_controller.py"]
+ ---> Running in e4fdcde77a0e
+ ---> Removed intermediate container e4fdcde77a0e
+ ---> 1d25a18d60c5
+Successfully built 1d25a18d60c5
+Successfully tagged o2ims-controller:local
+Importing O2IMS image into Kubernetes...
+unpacking docker.io/library/o2ims-controller:local (sha256:e41013b7be8d8e699b278f4af5546ab1179e8b447b747521bfe85908f00c0fb9)...done
+O2IMS operator image built: o2ims-controller:local
+=== [13/14] Deploying O2IMS Operator ===
+Applying O2IMS CRDs...
+customresourcedefinition.apiextensions.k8s.io/provisioningrequests.o2ims.provisioning.oran.org created
+Deploying O2IMS operator...
+namespace/o2ims-system created
+serviceaccount/o2ims-controller created
+clusterrole.rbac.authorization.k8s.io/o2ims-controller-role created
+clusterrolebinding.rbac.authorization.k8s.io/o2ims-controller-rolebinding created
+deployment.apps/o2ims-controller created
+service/o2ims-controller created
+Waiting for O2IMS operator to be ready...
+Waiting for deployment "o2ims-controller" rollout to finish: 0 of 1 updated replicas are available...
+deployment "o2ims-controller" successfully rolled out
+O2IMS operator deployed successfully
+=== Building FOCOM Operator ===
+Building FOCOM operator image...
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  18.43kB
+Step 1/6 : FROM python:3.11-slim
+ ---> cb352e69d7b6
+Step 2/6 : WORKDIR /app
+ ---> Using cache
+ ---> 376ee827ca54
+Step 3/6 : COPY requirements.txt .
+ ---> 093704eabcbe
+Step 4/6 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Running in b7339aa01641
+Collecting kopf>=1.36.0 (from -r requirements.txt (line 1))
+  Downloading kopf-1.39.0-py3-none-any.whl.metadata (9.5 kB)
+Collecting kubernetes>=28.0.0 (from -r requirements.txt (line 2))
+  Downloading kubernetes-34.1.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting python-json-logger (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading python_json_logger-4.0.0-py3-none-any.whl.metadata (4.0 kB)
+Collecting iso8601 (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading iso8601-2.1.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting pyyaml (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting click>=8.2.0 (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting aiohttp (from kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading aiohttp-3.13.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.1 kB)
+Collecting certifi>=14.05.14 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading certifi-2025.11.12-py3-none-any.whl.metadata (2.5 kB)
+Collecting six>=1.9.0 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting python-dateutil>=2.5.3 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting google-auth>=1.0.1 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading google_auth-2.45.0-py2.py3-none-any.whl.metadata (6.8 kB)
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting requests (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+Collecting requests-oauthlib (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+Collecting urllib3<2.4.0,>=1.24.2 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading urllib3-2.3.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting durationpy>=0.7 (from kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading durationpy-0.10-py3-none-any.whl.metadata (340 bytes)
+Collecting cachetools<7.0,>=2.0.0 (from google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading cachetools-6.2.4-py3-none-any.whl.metadata (5.6 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting rsa<5,>=3.1.4 (from google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+Collecting aiohappyeyeballs>=2.5.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.4.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting attrs>=17.3.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading attrs-25.4.0-py3-none-any.whl.metadata (10 kB)
+Collecting frozenlist>=1.1.1 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+Collecting multidict<7.0,>=4.5 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading multidict-6.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+Collecting propcache>=0.2.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (13 kB)
+Collecting yarl<2.0,>=1.17.0 (from aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading yarl-1.22.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (75 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 75.1/75.1 kB 4.2 MB/s eta 0:00:00
+Collecting charset_normalizer<4,>=2 (from requests->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)
+Collecting idna<4,>=2.5 (from requests->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+Collecting oauthlib>=3.0.0 (from requests-oauthlib->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading oauthlib-3.3.1-py3-none-any.whl.metadata (7.9 kB)
+Collecting typing-extensions>=4.2 (from aiosignal>=1.4.0->aiohttp->kopf>=1.36.0->-r requirements.txt (line 1))
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=28.0.0->-r requirements.txt (line 2))
+  Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+Downloading kopf-1.39.0-py3-none-any.whl (209 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 209.2/209.2 kB 6.1 MB/s eta 0:00:00
+Downloading kubernetes-34.1.0-py2.py3-none-any.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 20.3 MB/s eta 0:00:00
+Downloading certifi-2025.11.12-py3-none-any.whl (159 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 159.4/159.4 kB 70.2 MB/s eta 0:00:00
+Downloading click-8.3.1-py3-none-any.whl (108 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 62.8 MB/s eta 0:00:00
+Downloading durationpy-0.10-py3-none-any.whl (3.9 kB)
+Downloading google_auth-2.45.0-py2.py3-none-any.whl (233 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.3/233.3 kB 46.9 MB/s eta 0:00:00
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 48.6 MB/s eta 0:00:00
+Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 25.7 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading urllib3-2.3.0-py3-none-any.whl (128 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 128.4/128.4 kB 43.9 MB/s eta 0:00:00
+Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.6/82.6 kB 81.4 MB/s eta 0:00:00
+Downloading aiohttp-3.13.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 29.3 MB/s eta 0:00:00
+Downloading iso8601-2.1.0-py3-none-any.whl (7.5 kB)
+Downloading python_json_logger-4.0.0-py3-none-any.whl (15 kB)
+Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.7/64.7 kB 83.3 MB/s eta 0:00:00
+Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+Downloading attrs-25.4.0-py3-none-any.whl (67 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.6/67.6 kB 66.9 MB/s eta 0:00:00
+Downloading cachetools-6.2.4-py3-none-any.whl (11 kB)
+Downloading charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (151 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151.6/151.6 kB 90.1 MB/s eta 0:00:00
+Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.1/231.1 kB 76.7 MB/s eta 0:00:00
+Downloading idna-3.11-py3-none-any.whl (71 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 61.9 MB/s eta 0:00:00
+Downloading multidict-6.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (246 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.7/246.7 kB 22.7 MB/s eta 0:00:00
+Downloading oauthlib-3.3.1-py3-none-any.whl (160 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 160.1/160.1 kB 85.4 MB/s eta 0:00:00
+Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (210 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 210.0/210.0 kB 49.4 MB/s eta 0:00:00
+Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.3/181.3 kB 82.4 MB/s eta 0:00:00
+Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+Downloading yarl-1.22.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (365 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 365.8/365.8 kB 52.2 MB/s eta 0:00:00
+Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 83.1/83.1 kB 304.3 kB/s eta 0:00:00
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 15.6 MB/s eta 0:00:00
+Installing collected packages: durationpy, websocket-client, urllib3, typing-extensions, six, pyyaml, python-json-logger, pyasn1, propcache, oauthlib, multidict, iso8601, idna, frozenlist, click, charset_normalizer, certifi, cachetools, attrs, aiohappyeyeballs, yarl, rsa, requests, python-dateutil, pyasn1-modules, aiosignal, requests-oauthlib, google-auth, aiohttp, kubernetes, kopf
+Successfully installed aiohappyeyeballs-2.6.1 aiohttp-3.13.2 aiosignal-1.4.0 attrs-25.4.0 cachetools-6.2.4 certifi-2025.11.12 charset_normalizer-3.4.4 click-8.3.1 durationpy-0.10 frozenlist-1.8.0 google-auth-2.45.0 idna-3.11 iso8601-2.1.0 kopf-1.39.0 kubernetes-34.1.0 multidict-6.7.0 oauthlib-3.3.1 propcache-0.4.1 pyasn1-0.6.1 pyasn1-modules-0.4.2 python-dateutil-2.9.0.post0 python-json-logger-4.0.0 pyyaml-6.0.3 requests-2.32.5 requests-oauthlib-2.0.0 rsa-4.9.1 six-1.17.0 typing-extensions-4.15.0 urllib3-2.3.0 websocket-client-1.9.0 yarl-1.22.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 24.0 -> 25.3
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container b7339aa01641
+ ---> c22752f118af
+Step 5/6 : COPY focom_controller.py .
+ ---> 13c059d79304
+Step 6/6 : CMD ["kopf", "run", "--standalone", "--liveness=http://0.0.0.0:8080/healthz", "focom_controller.py"]
+ ---> Running in 94b52be4d651
+ ---> Removed intermediate container 94b52be4d651
+ ---> 9ff5611bbe9a
+Successfully built 9ff5611bbe9a
+Successfully tagged focom-controller:local
+Importing FOCOM image into Kubernetes...
+unpacking docker.io/library/focom-controller:local (sha256:0a1d7f381241376a33e0c9014cb5a6b86e4113490a2463d6499f58c63140b962)...done
+FOCOM operator image built: focom-controller:local
+=== [14/14] Deploying FOCOM Operator ===
+Applying FOCOM CRDs...
+customresourcedefinition.apiextensions.k8s.io/focomprovisioningrequests.focom.nephio.org created
+Deploying FOCOM operator...
+namespace/focom-system created
+serviceaccount/focom-controller created
+clusterrole.rbac.authorization.k8s.io/focom-controller-role created
+clusterrolebinding.rbac.authorization.k8s.io/focom-controller-rolebinding created
+deployment.apps/focom-controller created
+Waiting for FOCOM operator to be ready...
+Waiting for deployment "focom-controller" rollout to finish: 0 of 1 updated replicas are available...
+deployment "focom-controller" successfully rolled out
+FOCOM operator deployed successfully
+=== Installation Complete ===
+-----------------------------------
+Mgmt Node IP: 10.204.86.140
+K8s Version:  Server Version: v1.30.14
+BYOH Agent:   /home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM/byoh-host-agent (Built Locally)
+BYOH Image:   byoh-controller:local (Built Locally)
+-----------------------------------
+O2IMS Operator: Deployed to o2ims-system namespace
+FOCOM Operator: Deployed to focom-system namespace
+-----------------------------------
+USAGE:
+1. Run Ansible to prepare hosts:
+   ansible-playbook site.yaml
+
+2. Create cluster via O2IMS ProvisioningRequest:
+   kubectl apply -f examples/o2ims-provisioning-request.yaml
+
+3. Or via FOCOM (SMO interface):
+   kubectl apply -f examples/focom-provisioning-request.yaml
+
+4. Monitor cluster status:
+   kubectl get provisioningrequests
+   kubectl get clusters
+-----------------------------------
+=== Mgmt cluster with O2IMS/FOCOM installed successfully ===
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get pods -A 
+NAMESPACE                           NAME                                                             READY   STATUS             RESTARTS        AGE
+byoh-system                         byoh-controller-manager-5b586fc695-sxbnq                         2/2     Running            1 (2m59s ago)   3m59s
+capi-kubeadm-bootstrap-system       capi-kubeadm-bootstrap-controller-manager-6744d486bb-nrr9q       1/1     Running            1 (2m59s ago)   7m1s
+capi-kubeadm-control-plane-system   capi-kubeadm-control-plane-controller-manager-7c5ffdb7df-tlbmd   1/1     Running            0               7m
+capi-system                         capi-controller-manager-ffcfd4498-p5x6n                          1/1     Running            1 (2m59s ago)   7m2s
+cert-manager                        cert-manager-5fcfc99f7-btsdv                                     1/1     Running            0               11m
+cert-manager                        cert-manager-cainjector-75cfc9f6b7-gdlx5                         1/1     Running            0               11m
+cert-manager                        cert-manager-webhook-74b65dbf6f-g4gt8                            1/1     Running            0               11m
+devtroncd                           app-sync-job-vgcax-qgpcm                                         0/1     Init:0/1           0               3m49s
+devtroncd                           argocd-dex-server-56c9bd59d9-9czsh                               1/1     Running            0               3m49s
+devtroncd                           dashboard-5f896458bb-gl4x6                                       1/1     Running            0               3m49s
+devtroncd                           devtron-5b755bc9bc-96zjd                                         0/1     CrashLoopBackOff   4 (67s ago)     3m49s
+devtroncd                           devtron-6fc6f5f76d-l4mgr                                         0/1     Running            0               5s
+devtroncd                           kubelink-7487b89bd7-sn46k                                        0/1     CrashLoopBackOff   4 (51s ago)     3m49s
+devtroncd                           kubelink-797858ffb8-c2pqg                                        0/1     CrashLoopBackOff   1 (3s ago)      5s
+devtroncd                           postgresql-migrate-casbin-irdml-rdq6n                            0/1     Completed          0               3m49s
+devtroncd                           postgresql-migrate-devtron-zdoc7-m2l7r                           1/1     Running            3 (38s ago)     3m49s
+devtroncd                           postgresql-postgresql-0                                          2/2     Running            0               3m49s
+focom-system                        focom-controller-769f664f4f-gbtfw                                1/1     Running            0               60s
+kube-flannel                        kube-flannel-ds-lxhkm                                            1/1     Running            0               11m
+kube-system                         coredns-55cb58b774-tjx7b                                         1/1     Running            0               11m
+kube-system                         coredns-55cb58b774-z4m4f                                         1/1     Running            0               11m
+kube-system                         etcd-mgmt-1                                                      1/1     Running            0               12m
+kube-system                         kube-apiserver-mgmt-1                                            1/1     Running            0               12m
+kube-system                         kube-controller-manager-mgmt-1                                   1/1     Running            1 (3m8s ago)    12m
+kube-system                         kube-proxy-plftb                                                 1/1     Running            0               11m
+kube-system                         kube-scheduler-mgmt-1                                            1/1     Running            1 (2m59s ago)   12m
+local-path-storage                  local-path-provisioner-8ffbb88cb-cpr95                           1/1     Running            0               11m
+o2ims-system                        o2ims-controller-594c68f6b6-dmtwd                                1/1     Running            0               2m
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get pods -n o2ims-system   # Should show o2ims-controller Running
+kubectl get pods -n focom-system   # Should show focom-controller Running
+NAME                                READY   STATUS    RESTARTS   AGE
+o2ims-controller-594c68f6b6-dmtwd   1/1     Running   0          6m14s
+NAME                                READY   STATUS    RESTARTS   AGE
+focom-controller-769f664f4f-gbtfw   1/1     Running   0          5m15s
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi site.yaml 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ ansible-playbook site.yaml
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Collection kubernetes.core does not support Ansible version 2.10.8
+
+PLAY [1. Rotate Keys & Setup Inventory] ******************************************************************************************************************************************************************************************************
+
+TASK [Delete old BootstrapKubeconfig objects] ************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Get API Server Endpoint] ***************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Get CA Cert] ***************************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Create Fresh BootstrapKubeconfig] ******************************************************************************************************************************************************************************************************
+[WARNING]: unknown field "spec.token-ttl"
+changed: [localhost]
+
+TASK [Extract Token Data] ********************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Save Token to File] ********************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Add physical hosts to Ansible inventory] ***********************************************************************************************************************************************************************************************
+ok: [localhost] => (item={'host_id': 1, 'host_name': 'target-1', 'host_ip': '10.204.86.111', 'host_user': 'ubuntu', 'host_pwd': ''})
+ok: [localhost] => (item={'host_id': 2, 'host_name': 'target-2', 'host_ip': '10.204.86.181', 'host_user': 'ubuntu', 'host_pwd': ''})
+
+PLAY [2. Configure OS & Install Agent] *******************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************************************************************************************************
+ok: [10.204.86.181]
+ok: [10.204.86.111]
+
+TASK [Disable swap] **************************************************************************************************************************************************************************************************************************
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+TASK [Load kernel modules] *******************************************************************************************************************************************************************************************************************
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+TASK [Set sysctl params] *********************************************************************************************************************************************************************************************************************
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+TASK [Install Containerd] ********************************************************************************************************************************************************************************************************************
+changed: [10.204.86.181]
+changed: [10.204.86.111]
+
+TASK [Configure Containerd (SystemdCgroup Fix)] **********************************************************************************************************************************************************************************************
+[WARNING]: Consider using the file module with state=directory rather than running 'mkdir'.  If you need to use command because file is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+TASK [Install K8s Prereqs] *******************************************************************************************************************************************************************************************************************
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+TASK [Add K8s Repo & Install Binaries] *******************************************************************************************************************************************************************************************************
+changed: [10.204.86.181]
+changed: [10.204.86.111]
+
+TASK [Upload Local Agent Binary] *************************************************************************************************************************************************************************************************************
+changed: [10.204.86.181]
+changed: [10.204.86.111]
+
+TASK [Copy Fresh Registration Key] ***********************************************************************************************************************************************************************************************************
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+TASK [Start Agent] ***************************************************************************************************************************************************************************************************************************
+changed: [10.204.86.111]
+changed: [10.204.86.181]
+
+PLAY [3. Finalize Host Registration] *********************************************************************************************************************************************************************************************************
+
+TASK [Wait for ByoHosts to Register] *********************************************************************************************************************************************************************************************************
+changed: [localhost] => (item={'host_id': 1, 'host_name': 'target-1', 'host_ip': '10.204.86.111', 'host_user': 'ubuntu', 'host_pwd': ''})
+changed: [localhost] => (item={'host_id': 2, 'host_name': 'target-2', 'host_ip': '10.204.86.181', 'host_user': 'ubuntu', 'host_pwd': ''})
+
+TASK [Remove Restrictive Webhook] ************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Pin Hosts (Label ByoHosts with IDs)] ***************************************************************************************************************************************************************************************************
+changed: [localhost] => (item={'host_id': 1, 'host_name': 'target-1', 'host_ip': '10.204.86.111', 'host_user': 'ubuntu', 'host_pwd': ''})
+changed: [localhost] => (item={'host_id': 2, 'host_name': 'target-2', 'host_ip': '10.204.86.181', 'host_user': 'ubuntu', 'host_pwd': ''})
+
+TASK [Display Registered Hosts] **************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Host Registration Summary] *************************************************************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "==========================================\nHOST REGISTRATION COMPLETE\n==========================================\nNAME       OSNAME   OSIMAGE              ARCH    LABELS\ntarget-1   linux    Ubuntu 22.04.5 LTS   amd64   host-id=1\ntarget-2   linux    Ubuntu 22.04.5 LTS   amd64   host-id=2\n\nNext Steps:\n1. Create clusters via O2IMS ProvisioningRequest:\n   kubectl apply -f examples/o2ims-provisioning-request.yaml\n\n2. Or via FOCOM (SMO interface):\n   kubectl apply -f examples/focom-provisioning-request.yaml\n\n3. Monitor cluster creation:\n   kubectl get provisioningrequests -w\n   kubectl get clusters -w\n==========================================\n"
+}
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************************************************
+10.204.86.111              : ok=11   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+10.204.86.181              : ok=11   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+localhost                  : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get byohost 
+NAME       OSNAME   OSIMAGE              ARCH
+target-1   linux    Ubuntu 22.04.5 LTS   amd64
+target-2   linux    Ubuntu 22.04.5 LTS   amd64
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi examples/o2ims-provisioning-request.yaml 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi examples/o2ims-provisioning-request.yaml 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi examples/focom-provisioning-request.yaml 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get cluster-api-provider-bringyourownhost/
+error: arguments in resource/name form must have a single resource and name
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get cluster
+No resources found in default namespace.
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get byom
+No resources found in default namespace.
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl apply -f examples/o2ims-provisioning-request.yaml
+provisioningrequest.o2ims.provisioning.oran.org/core-cluster-provisioning created
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get provisioningrequests -w  
+NAME                        CLUSTER   STATE         MESSAGE                                               AGE
+core-cluster-provisioning   core      progressing   Cluster resources applied, waiting for provisioning   7s
+core-cluster-provisioning   core      fulfilled     Cluster successfully provisioned                      30s
+^Cubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get clusters 
+NAME   CLUSTERCLASS   PHASE         AGE   VERSION
+core                  Provisioned   45s   
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine
+NAME                        CLUSTER   NODENAME   PROVIDERID   PHASE          AGE   VERSION
+core-control-plane-l7qjc    core                              Provisioning   52s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                              Pending        39s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine
+NAME                        CLUSTER   NODENAME   PROVIDERID        PHASE         AGE   VERSION
+core-control-plane-l7qjc    core                 byoh://target-1   Provisioned   57s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                                   Pending       44s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine -w
+NAME                        CLUSTER   NODENAME   PROVIDERID        PHASE          AGE   VERSION
+core-control-plane-l7qjc    core                 byoh://target-1   Provisioned    61s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                                   Provisioning   48s   v1.32.0
+core-control-plane-l7qjc    core                 byoh://target-1   Provisioned    67s   v1.32.0
+core-control-plane-l7qjc    core                 byoh://target-1/2gyx02   Provisioned    67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        67s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                                          Provisioning   56s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2          Provisioning   56s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2          Provisioned    56s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2          Provisioned    56s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2          Provisioned    56s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2          Provisioned    56s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2          Provisioned    57s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core                 byoh://target-2/jf3du4   Provisioned    57s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running        57s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running        57s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running        57s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running        57s   v1.32.0
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        75s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running        67s   v1.32.0
+^Cubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine 
+NAME                        CLUSTER   NODENAME   PROVIDERID               PHASE     AGE   VERSION
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running   88s   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running   75s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get secret
+NAME                        TYPE                      DATA   AGE
+core-ca                     cluster.x-k8s.io/secret   2      106s
+core-control-plane-l7qjc    cluster.x-k8s.io/secret   2      106s
+core-etcd                   cluster.x-k8s.io/secret   2      106s
+core-kubeconfig             cluster.x-k8s.io/secret   1      106s
+core-proxy                  cluster.x-k8s.io/secret   2      106s
+core-sa                     cluster.x-k8s.io/secret   2      106s
+core-worker-2-qlqwp-kjxr8   cluster.x-k8s.io/secret   2      47s
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get secret core-kubeconfig -o jsonpath='{.data.value}' | base64 -d > core.kubeconfig
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get nodes --kubeconfig core.kubeconfig 
+NAME       STATUS   ROLES           AGE   VERSION
+target-1   Ready    control-plane   98s   v1.32.0
+target-2   Ready    <none>          78s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get provisioningrequests 
+NAME                        CLUSTER   STATE       MESSAGE                            AGE
+core-cluster-provisioning   core      fulfilled   Cluster successfully provisioned   14m
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+
+[1]+  Stopped                 vi input.json
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi examples/focom-provisioning-request.yaml 
+
+[2]+  Stopped                 vi examples/focom-provisioning-request.yaml
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi examples/focom-provisioning-request.yaml 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ vi input.json 
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ ansible-playbook site.yaml 
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Collection kubernetes.core does not support Ansible version 2.10.8
+
+PLAY [1. Rotate Keys & Setup Inventory] ******************************************************************************************************************************************************************************************************
+
+TASK [Delete old BootstrapKubeconfig objects] ************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Get API Server Endpoint] ***************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Get CA Cert] ***************************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Create Fresh BootstrapKubeconfig] ******************************************************************************************************************************************************************************************************
+[WARNING]: unknown field "spec.token-ttl"
+changed: [localhost]
+
+TASK [Extract Token Data] ********************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Save Token to File] ********************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Add physical hosts to Ansible inventory] ***********************************************************************************************************************************************************************************************
+ok: [localhost] => (item={'host_id': 3, 'host_name': 'target-3', 'host_ip': '10.204.86.225', 'host_user': 'ubuntu', 'host_pwd': ''})
+ok: [localhost] => (item={'host_id': 4, 'host_name': 'target-4', 'host_ip': '10.204.86.249', 'host_user': 'ubuntu', 'host_pwd': ''})
+
+PLAY [2. Configure OS & Install Agent] *******************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************************************************************************************************
+ok: [10.204.86.249]
+ok: [10.204.86.225]
+
+TASK [Disable swap] **************************************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Load kernel modules] *******************************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Set sysctl params] *********************************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Install Containerd] ********************************************************************************************************************************************************************************************************************
+changed: [10.204.86.249]
+changed: [10.204.86.225]
+
+TASK [Configure Containerd (SystemdCgroup Fix)] **********************************************************************************************************************************************************************************************
+[WARNING]: Consider using the file module with state=directory rather than running 'mkdir'.  If you need to use command because file is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Install K8s Prereqs] *******************************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Add K8s Repo & Install Binaries] *******************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Upload Local Agent Binary] *************************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+TASK [Copy Fresh Registration Key] ***********************************************************************************************************************************************************************************************************
+changed: [10.204.86.249]
+changed: [10.204.86.225]
+
+TASK [Start Agent] ***************************************************************************************************************************************************************************************************************************
+changed: [10.204.86.225]
+changed: [10.204.86.249]
+
+PLAY [3. Finalize Host Registration] *********************************************************************************************************************************************************************************************************
+
+TASK [Wait for ByoHosts to Register] *********************************************************************************************************************************************************************************************************
+changed: [localhost] => (item={'host_id': 3, 'host_name': 'target-3', 'host_ip': '10.204.86.225', 'host_user': 'ubuntu', 'host_pwd': ''})
+changed: [localhost] => (item={'host_id': 4, 'host_name': 'target-4', 'host_ip': '10.204.86.249', 'host_user': 'ubuntu', 'host_pwd': ''})
+
+TASK [Remove Restrictive Webhook] ************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Pin Hosts (Label ByoHosts with IDs)] ***************************************************************************************************************************************************************************************************
+changed: [localhost] => (item={'host_id': 3, 'host_name': 'target-3', 'host_ip': '10.204.86.225', 'host_user': 'ubuntu', 'host_pwd': ''})
+changed: [localhost] => (item={'host_id': 4, 'host_name': 'target-4', 'host_ip': '10.204.86.249', 'host_user': 'ubuntu', 'host_pwd': ''})
+
+TASK [Display Registered Hosts] **************************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Host Registration Summary] *************************************************************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "==========================================\nHOST REGISTRATION COMPLETE\n==========================================\nNAME       OSNAME   OSIMAGE              ARCH    LABELS\ntarget-1   linux    Ubuntu 22.04.5 LTS   amd64   byoh.infrastructure.cluster.x-k8s.io/byomachine-name=default.core-control-plane-l7qjc,cluster.x-k8s.io/cluster-name=core,host-id=1\ntarget-2   linux    Ubuntu 22.04.5 LTS   amd64   byoh.infrastructure.cluster.x-k8s.io/byomachine-name=default.core-worker-2-qlqwp-kjxr8,cluster.x-k8s.io/cluster-name=core,host-id=2\ntarget-3   linux    Ubuntu 22.04.5 LTS   amd64   host-id=3\ntarget-4   linux    Ubuntu 22.04.5 LTS   amd64   host-id=4\n\nNext Steps:\n1. Create clusters via O2IMS ProvisioningRequest:\n   kubectl apply -f examples/o2ims-provisioning-request.yaml\n\n2. Or via FOCOM (SMO interface):\n   kubectl apply -f examples/focom-provisioning-request.yaml\n\n3. Monitor cluster creation:\n   kubectl get provisioningrequests -w\n   kubectl get clusters -w\n==========================================\n"
+}
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************************************************
+10.204.86.225              : ok=11   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+10.204.86.249              : ok=11   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+localhost                  : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get byohost
+NAME       OSNAME   OSIMAGE              ARCH
+target-1   linux    Ubuntu 22.04.5 LTS   amd64
+target-2   linux    Ubuntu 22.04.5 LTS   amd64
+target-3   linux    Ubuntu 22.04.5 LTS   amd64
+target-4   linux    Ubuntu 22.04.5 LTS   amd64
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl apply -f examples/focom-provisioning-request.yaml 
+focomprovisioningrequest.focom.nephio.org/edge-cluster-request created
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get focomprovisioningrequests
+NAME                   O-CLOUD              PHASE    REMOTE                       AGE
+edge-cluster-request   management-cluster   Synced   edge-cluster-request-o2ims   3s
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get focomprovisioningrequests -w
+NAME                   O-CLOUD              PHASE    REMOTE                       AGE
+edge-cluster-request   management-cluster   Synced   edge-cluster-request-o2ims   6s
+^Cubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get provisioningrequests -w
+NAME                         CLUSTER   STATE         MESSAGE                                               AGE
+core-cluster-provisioning    core      fulfilled     Cluster successfully provisioned                      76m
+edge-cluster-request-o2ims   edge      progressing   Cluster resources applied, waiting for provisioning   27s
+edge-cluster-request-o2ims   edge      fulfilled     Cluster successfully provisioned                      30s
+^Cubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get clusters  
+NAME   CLUSTERCLASS   PHASE         AGE   VERSION
+core                  Provisioned   77m   
+edge                  Provisioned   46s   
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine
+NAME                        CLUSTER   NODENAME   PROVIDERID               PHASE         AGE   VERSION
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running       77m   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running       76m   v1.32.0
+edge-control-plane-flwvd    edge                 byoh://target-3/8lu59o   Provisioned   54s   v1.32.0
+edge-worker-4-wtzbk-b2b8d   edge                                          Pending       41s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine
+NAME                        CLUSTER   NODENAME   PROVIDERID               PHASE          AGE   VERSION
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running        77m   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running        77m   v1.32.0
+edge-control-plane-flwvd    edge      target-3   byoh://target-3/8lu59o   Running        59s   v1.32.0
+edge-worker-4-wtzbk-b2b8d   edge                                          Provisioning   46s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get machine
+NAME                        CLUSTER   NODENAME   PROVIDERID               PHASE     AGE   VERSION
+core-control-plane-l7qjc    core      target-1   byoh://target-1/2gyx02   Running   77m   v1.32.0
+core-worker-2-qlqwp-kjxr8   core      target-2   byoh://target-2/jf3du4   Running   77m   v1.32.0
+edge-control-plane-flwvd    edge      target-3   byoh://target-3/8lu59o   Running   71s   v1.32.0
+edge-worker-4-wtzbk-b2b8d   edge      target-4   byoh://target-4/cwueuk   Running   58s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get secret edge-kubeconfig -o jsonpath='{.data.value}' | base64 -d > edge.kubeconfig
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get nodes --kubeconfig e
+edge.kubeconfig  examples/        
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get nodes --kubeconfig e
+edge.kubeconfig  examples/        
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get nodes --kubeconfig e
+edge.kubeconfig  examples/        
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ kubectl get nodes --kubeconfig edge.kubeconfig 
+NAME       STATUS   ROLES           AGE   VERSION
+target-3   Ready    control-plane   95s   v1.32.0
+target-4   Ready    <none>          68s   v1.32.0
+ubuntu@mgmt-1:~/oransc-sanity/rehan/BYOH-O2IMS-FOCOM$ 

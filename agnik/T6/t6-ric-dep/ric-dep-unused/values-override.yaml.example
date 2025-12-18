@@ -1,0 +1,63 @@
+# values-override.yaml.example
+# ----------------------------
+# Example values override file for Near-RT RIC Helm charts
+# Copy this file and customize for your deployment
+#
+# Usage:
+#   cp values-override.yaml.example values-override.yaml
+#   # Edit values-override.yaml with your customizations
+#   # Then use with: helm install --values values-override.yaml ...
+
+# Global image repository override
+global:
+  repository: "nexus3.o-ran-sc.org:10004/o-ran-sc"
+  repositoryCred:
+    user: ""
+    password: ""
+    mail: ""
+
+# Component-specific image overrides
+# Override individual component images
+appmgr:
+  image:
+    repository: "nexus3.o-ran-sc.org:10004/o-ran-sc"
+    name: "ric-plt-appmgr"
+    tag: "latest"  # Override with specific tag
+
+rtmgr:
+  image:
+    repository: "nexus3.o-ran-sc.org:10004/o-ran-sc"
+    name: "ric-plt-rtmgr"
+    tag: "latest"
+
+e2mgr:
+  image:
+    repository: "nexus3.o-ran-sc.org:10004/o-ran-sc"
+    name: "ric-plt-e2mgr"
+    tag: "latest"
+
+e2term:
+  image:
+    repository: "nexus3.o-ran-sc.org:10004/o-ran-sc"
+    name: "ric-plt-e2"
+    tag: "latest"
+
+# Resource limits (optional)
+# appmgr:
+#   resources:
+#     requests:
+#       cpu: "500m"
+#       memory: "512Mi"
+#     limits:
+#       cpu: "2000m"
+#       memory: "2Gi"
+
+# Replica counts (optional)
+# appmgr:
+#   replicaCount: 2
+
+# Namespace overrides (optional)
+# namespace:
+#   platform: "ricplt"
+#   infrastructure: "ricinfra"
+

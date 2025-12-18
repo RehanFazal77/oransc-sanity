@@ -1,0 +1,354 @@
+{
+  "archived-ric-app-admin": {
+    "init/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_SUB_FAILURE",
+        "RIC_SUB_DEL_RESP",
+        "RIC_SUB_DEL_FAILURE",
+        "RIC_INDICATION",
+        "RIC_CONTROL_ACK",
+        "RIC_CONTROL_FAILURE",
+        "A1_POLICY_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_DEL_REQ",
+        "RIC_CONTROL_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY"
+      ]
+    }
+  },
+  "ric-app-mc": {
+    "mc-core/mc/mc_deployment.json": {
+      "rxMessages": [
+        "RIC_UE_CONTEXT_RELEASE",
+        "RIC_SGNB_ADDITION_REQ",
+        "RIC_SGNB_ADDITION_ACK",
+        "RIC_SGNB_ADDITION_REJECT",
+        "RIC_SGNB_RECONF_COMPLETE",
+        "RIC_RRC_TRANSFER",
+        "RIC_SGNB_MOD_REQUEST",
+        "RIC_SGNB_MOD_REQUEST_ACK",
+        "RIC_SGNB_MOD_REQUEST_REJ",
+        "RIC_SGNB_MOD_REQUIRED",
+        "RIC_SGNB_MOD_CONFIRM",
+        "RIC_SGNB_MOD_REFUSE",
+        "RIC_SGNB_RELEASE_REQUEST",
+        "RIC_SGNB_RELEASE_REQUEST_ACK",
+        "RIC_SGNB_RELEASE_REQUIRED",
+        "RIC_SGNB_RELEASE_CONFIRM",
+        "RIC_SECONDARY_RAT_DATA_USAGE_REPORT",
+        "RIC_UE_CONTEXT_RELEASE",
+        "RIC_SGNB_ADDITION_REQ",
+        "RIC_SGNB_ADDITION_ACK",
+        "RIC_SGNB_ADDITION_REJECT",
+        "RIC_SGNB_RECONF_COMPLETE",
+        "RIC_RRC_TRANSFER",
+        "RIC_SGNB_MOD_REQUEST",
+        "RIC_SGNB_MOD_REQUEST_ACK",
+        "RIC_SGNB_MOD_REQUEST_REJ",
+        "RIC_SGNB_MOD_REQUIRED",
+        "RIC_SGNB_MOD_CONFIRM",
+        "RIC_SGNB_MOD_REFUSE",
+        "RIC_SGNB_RELEASE_REQUEST",
+        "RIC_SGNB_RELEASE_REQUEST_ACK",
+        "RIC_SGNB_RELEASE_REQUIRED",
+        "RIC_SGNB_RELEASE_CONFIRM",
+        "RIC_SECONDARY_RAT_DATA_USAGE_REPORT"
+      ],
+      "txMessages": [
+        "MC_REPORT",
+        "MC_REPORT"
+      ]
+    }
+  },
+  "ric-app-hw": {
+    "init/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ",
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP",
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    }
+  },
+  "ric-app-ts": {
+    "xapp-descriptor/config-file.json": {
+      "rxMessages": [
+        "TS_QOE_PREDICTION",
+        "A1_POLICY_REQ",
+        "TS_ANOMALY_UPDATE",
+        "TS_QOE_PREDICTION",
+        "A1_POLICY_REQ",
+        "TS_ANOMALY_UPDATE"
+      ],
+      "txMessages": [
+        "TS_UE_LIST",
+        "TS_ANOMALY_ACK",
+        "TS_UE_LIST",
+        "TS_ANOMALY_ACK"
+      ]
+    }
+  },
+  "ric-app-qp": {
+    "xapp-descriptor/config.json": {
+      "rxMessages": [
+        "TS_UE_LIST",
+        "TS_UE_LIST"
+      ],
+      "txMessages": [
+        "TS_QOE_PREDICTION",
+        "TS_QOE_PREDICTION"
+      ]
+    }
+  },
+  "archived-ric-app-qp-driver": {
+    "xapp-descriptor/config.json": {
+      "rxMessages": [
+        "TS_UE_LIST",
+        "TS_UE_LIST"
+      ],
+      "txMessages": [
+        "TS_QOE_PRED_REQ",
+        "RIC_ALARM",
+        "TS_QOE_PRED_REQ",
+        "RIC_ALARM"
+      ]
+    }
+  },
+  "scp-ric-app-kpimon": {
+    "xapp-descriptor/config.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_RESP",
+        "RIC_INDICATION"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_REQ"
+      ]
+    }
+  },
+  "ric-app-ad": {
+    "xapp-descriptor/config.json": {
+      "rxMessages": [
+        "TS_ANOMALY_ACK",
+        "TS_ANOMALY_ACK"
+      ],
+      "txMessages": [
+        "TS_ANOMALY_UPDATE",
+        "TS_ANOMALY_UPDATE"
+      ]
+    }
+  },
+  "ric-app-hw-go": {
+    "README.md": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    },
+    "config/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_SUB_FAILURE",
+        "RIC_SUB_DEL_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_DEL_REQ",
+        "RIC_SGNB_ADDITION_REQ",
+        "RIC_SGNB_ADDITION_ACK",
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    }
+  },
+  "ric-app-hw-python": {
+    "README.md": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    },
+    "init/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_SUB_FAILURE",
+        "RIC_SUB_DEL_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_DEL_REQ",
+        "RIC_SGNB_ADDITION_REQ",
+        "RIC_SGNB_ADDITION_ACK",
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    },
+    "docs/onboard-and-deploy.rst": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    }
+  },
+  "ric-app-bouncer": {
+    "Bouncer/xapp-descriptor/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_DEL_RESP",
+        "RIC_SUB_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_DEL_RESP"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_DEL_REQ",
+        "RIC_SUB_REQ",
+        "RIC_SUB_DEL_REQ"
+      ]
+    }
+  },
+  "ric-app-rc": {
+    "xapp-descriptor/config.json": {
+      "rxMessages": [
+        "RIC_CONTROL_ACK, RIC_CONTROL_FAILURE, RIC_ERROR_INDICATION",
+        "RIC_CONTROL_ACK, RIC_CONTROL_FAILURE, RIC_ERROR_INDICATION"
+      ],
+      "txMessages": [
+        "RIC_CONTROL_REQ",
+        "RIC_CONTROL_REQ"
+      ]
+    }
+  },
+  "ric-app-kpimon-go": {
+    "deploy/schema.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_RESP",
+        "RIC_INDICATION"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_REQ"
+      ]
+    },
+    "deploy/config.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_RESP",
+        "RIC_INDICATION"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_REQ"
+      ]
+    }
+  },
+  "ric-app-hw-rust": {
+    "config/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_HEALTH_CHECK_REQ",
+        "RIC_INDICATION"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    }
+  },
+  "ric-app-qp-aimlfw": {
+    "config/config-file.json": {
+      "rxMessages": [
+        "RIC_HEALTH_CHECK_REQ",
+        "TS_UE_LIST",
+        "TS_QOE_PRED_REQ",
+        "RIC_HEALTH_CHECK_REQ",
+        "TS_UE_LIST",
+        "TS_QOE_PRED_REQ"
+      ],
+      "txMessages": [
+        "RIC_HEALTH_CHECK_RESP",
+        "TS_QOE_PREDICTION",
+        "RIC_HEALTH_CHECK_RESP",
+        "TS_QOE_PREDICTION"
+      ]
+    }
+  },
+  "ric-app-ad-cell": {
+    "init/config-file.json": {
+      "rxMessages": [
+        "RIC_SUB_RESP",
+        "RIC_SUB_FAILURE",
+        "RIC_SUB_DEL_RESP",
+        "RIC_INDICATION",
+        "RIC_SUB_RESP",
+        "A1_POLICY_REQ",
+        "RIC_HEALTH_CHECK_REQ"
+      ],
+      "txMessages": [
+        "RIC_SUB_REQ",
+        "RIC_SUB_DEL_REQ",
+        "RIC_SGNB_ADDITION_REQ",
+        "RIC_SGNB_ADDITION_ACK",
+        "RIC_SUB_REQ",
+        "A1_POLICY_RESP",
+        "A1_POLICY_QUERY",
+        "RIC_HEALTH_CHECK_RESP"
+      ]
+    }
+  }
+}

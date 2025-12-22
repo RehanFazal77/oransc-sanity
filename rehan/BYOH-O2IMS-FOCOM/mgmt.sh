@@ -457,6 +457,32 @@ deploy_focom_operator() {
     echo "FOCOM operator deployed successfully"
 }
 
+build_ansible_runner() {
+    echo "=== Building Ansible Runner Image ==="
+    
+    local ANSIBLE_DIR="$REPO_DIR/o2ims-operator/ansible-runner"
+    local ANSIBLE_IMAGE="ansible-runner:local"
+    
+    if [ ! -d "$ANSIBLE_DIR" ]; then
+        echo "WARNING: Ansible runner directory not found at $ANSIBLE_DIR"
+        return 0
+    fi
+    
+    # Build Docker image
+    echo "Building ansible-runner image..."
+    pushd "$ANSIBLE_DIR" > /dev/null
+    sudo docker build -t "$ANSIBLE_IMAGE" .
+    
+    # Import into containerd
+    echo "Importing ansible-runner image into Kubernetes..."
+    sudo docker save "$ANSIBLE_IMAGE" -o /tmp/ansible-runner.tar
+    sudo ctr -n k8s.io images import /tmp/ansible-runner.tar
+    sudo rm -f /tmp/ansible-runner.tar
+    popd > /dev/null
+    
+    echo "Ansible runner image built: $ANSIBLE_IMAGE"
+}
+
 final_report() {
     echo "=== Installation Complete ==="
     echo "-----------------------------------"
@@ -467,22 +493,23 @@ final_report() {
     echo "-----------------------------------"
     echo "O2IMS Operator: Deployed to o2ims-system namespace"
     echo "FOCOM Operator: Deployed to focom-system namespace"
+    echo "Ansible Runner: Built (ansible-runner:local)"
     echo "-----------------------------------"
-    echo "USAGE:"
-    echo "1. Run Ansible to prepare hosts:"
-    echo "   ansible-playbook site.yaml"
     echo ""
-    echo "2. Create cluster via O2IMS ProvisioningRequest:"
-    echo "   kubectl apply -f examples/o2ims-provisioning-request.yaml"
+    echo "FULLY AUTOMATED WORKFLOW:"
     echo ""
-    echo "3. Or via FOCOM (SMO interface):"
+    echo "1. Edit input.json with your host details"
+    echo ""
+    echo "2. Create cluster (hosts will be auto-registered):"
     echo "   kubectl apply -f examples/focom-provisioning-request.yaml"
     echo ""
-    echo "4. Monitor cluster status:"
+    echo "3. Monitor cluster status:"
+    echo "   kubectl get focomprovisioningrequests"
     echo "   kubectl get provisioningrequests"
     echo "   kubectl get clusters"
+    echo ""
     echo "-----------------------------------"
-    echo "=== Mgmt cluster with O2IMS/FOCOM installed successfully ==="
+    echo "=== Mgmt cluster with O2IMS/FOCOM installed successfully ===" 
 }
 
 # =========================
@@ -504,6 +531,7 @@ main() {
     deploy_o2ims_operator
     build_focom_operator
     deploy_focom_operator
+    build_ansible_runner
     final_report
 }
 

@@ -112,7 +112,7 @@ def handle_create(spec, name, namespace, logger, **kwargs):
             if not result.get("status"):
                 unregistered_hosts.append(host_name)
     
-    # If any hosts are not registered, run Ansible playbook
+    # If any hosts are not registered, run Ansible playbook to register them
     if unregistered_hosts:
         logger.info(f"Hosts not registered: {unregistered_hosts}. Running Ansible to register...")
         update_status(
@@ -137,9 +137,10 @@ def handle_create(spec, name, namespace, logger, **kwargs):
             return {"status": "failed", "message": error_msg}
         
         logger.info("Hosts registered successfully via Ansible")
-        
-        # Wait a bit for ByoHosts to appear
-        time.sleep(10)
+        # Wait for ByoHosts to appear in cluster
+        time.sleep(15)
+    else:
+        logger.info("All hosts are registered as ByoHosts, proceeding with cluster creation")
     
     # Update status to progressing
     update_status(

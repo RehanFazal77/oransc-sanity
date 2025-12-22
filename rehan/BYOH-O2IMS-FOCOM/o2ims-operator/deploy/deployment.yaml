@@ -64,7 +64,7 @@ rules:
   
   # Batch resources for Ansible Jobs
   - apiGroups: ["batch"]
-    resources: ["jobs"]
+    resources: ["jobs", "jobs/status"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   
   # Coordination for leader election

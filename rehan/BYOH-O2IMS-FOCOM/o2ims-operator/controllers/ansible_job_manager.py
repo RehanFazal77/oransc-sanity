@@ -14,8 +14,9 @@ from kubernetes.client.rest import ApiException
 logger = logging.getLogger(__name__)
 
 # Job configuration
-ANSIBLE_IMAGE = "cytopia/ansible:latest"
-DEFAULT_TIMEOUT = 600  # 10 minutes
+# Use custom image with Ansible + kubectl, or a public image that has both
+ANSIBLE_IMAGE = "ansible-runner:local"  # Custom image built from ansible-runner/Dockerfile
+DEFAULT_TIMEOUT = 900  # 15 minutes for full playbook
 JOB_NAMESPACE = "o2ims-system"
 
 
@@ -24,6 +25,7 @@ def create_ansible_job(
     playbook_path: str,
     project_dir: str = "/home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM",
     ssh_dir: str = "/home/ubuntu/.ssh",
+    kubeconfig_path: str = "/etc/kubernetes/admin.conf",
     extra_vars: Optional[Dict[str, str]] = None,
     namespace: str = JOB_NAMESPACE,
     logger=None
@@ -36,6 +38,7 @@ def create_ansible_job(
         playbook_path: Path to playbook (relative to project_dir)
         project_dir: Path to project directory on host
         ssh_dir: Path to SSH keys on host
+        kubeconfig_path: Path to kubeconfig on host
         extra_vars: Extra variables to pass to ansible-playbook
         namespace: Namespace to create Job in
         logger: Logger instance
@@ -46,10 +49,12 @@ def create_ansible_job(
     batch_api = client.BatchV1Api()
     
     # Build ansible-playbook command
+    # Use the hosts file from the project directory
     command = [
         "ansible-playbook",
         f"/workspace/{playbook_path}",
-        "--inventory", "/workspace/inventory.ini",
+        "-i", "/workspace/hosts",
+        "-v",  # Verbose output
     ]
     
     # Add extra variables if provided
@@ -70,8 +75,9 @@ def create_ansible_job(
             }
         ),
         spec=client.V1JobSpec(
-            ttl_seconds_after_finished=300,  # Clean up after 5 minutes
-            backoff_limit=2,
+            ttl_seconds_after_finished=600,  # Clean up after 10 minutes
+            backoff_limit=1,  # Only retry once
+            active_deadline_seconds=DEFAULT_TIMEOUT,
             template=client.V1PodTemplateSpec(
                 metadata=client.V1ObjectMeta(
                     labels={"app": "ansible-host-registration"}
@@ -97,6 +103,7 @@ def create_ansible_job(
                         client.V1Container(
                             name="ansible",
                             image=ANSIBLE_IMAGE,
+                            image_pull_policy="Never",  # Local image
                             command=command,
                             working_dir="/workspace",
                             volume_mounts=[
@@ -108,12 +115,25 @@ def create_ansible_job(
                                     name="ssh-keys",
                                     mount_path="/root/.ssh",
                                     read_only=True
+                                ),
+                                client.V1VolumeMount(
+                                    name="kubeconfig",
+                                    mount_path="/root/.kube",
+                                    read_only=True
                                 )
                             ],
                             env=[
                                 client.V1EnvVar(
                                     name="ANSIBLE_HOST_KEY_CHECKING",
                                     value="False"
+                                ),
+                                client.V1EnvVar(
+                                    name="KUBECONFIG",
+                                    value="/root/.kube/config"
+                                ),
+                                client.V1EnvVar(
+                                    name="ANSIBLE_FORCE_COLOR",
+                                    value="true"
                                 )
                             ]
                         )
@@ -132,6 +152,13 @@ def create_ansible_job(
                                 path=ssh_dir,
                                 type="Directory"
                             )
+                        ),
+                        client.V1Volume(
+                            name="kubeconfig",
+                            host_path=client.V1HostPathVolumeSource(
+                                path="/home/ubuntu/.kube",
+                                type="Directory"
+                            )
                         )
                     ],
                     restart_policy="Never"
@@ -139,6 +166,7 @@ def create_ansible_job(
             )
         )
     )
+    
     
     try:
         # Delete existing job if any

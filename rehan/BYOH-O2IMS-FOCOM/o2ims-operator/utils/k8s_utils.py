@@ -311,6 +311,35 @@ def get_byohosts(
         return []
 
 
+def get_byohost(
+    name: str,
+    namespace: str = "default",
+    logger=None
+) -> Dict[str, Any]:
+    """
+    Get a single ByoHost by name.
+
+    Returns:
+        dict with 'status' (bool) and 'body' (resource dict)
+    """
+    api = get_custom_objects_api()
+    try:
+        result = api.get_namespaced_custom_object(
+            group=BYOH_INFRA_GROUP,
+            version=BYOH_INFRA_VERSION,
+            namespace=namespace,
+            plural="byohosts",
+            name=name
+        )
+        return {"status": True, "body": result}
+    except ApiException as e:
+        if e.status == 404:
+            return {"status": False, "body": None, "not_found": True}
+        if logger:
+            logger.error(f"Failed to get ByoHost {name}: {e}")
+        return {"status": False, "body": None, "error": str(e)}
+
+
 def label_byohost(
     name: str,
     labels: Dict[str, str],

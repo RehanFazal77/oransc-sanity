@@ -12,6 +12,7 @@ import kopf
 import logging
 import uuid
 import time
+import os
 from datetime import datetime
 
 from utils import ProvisioningState, TIME_FORMAT, get_current_time
@@ -22,8 +23,10 @@ from utils.k8s_utils import (
     update_provisioning_request_status,
     delete_cluster_resources,
     label_byohost,
+    get_byohost,
 )
 from byoh_cluster_generator import generate_byoh_cluster_resources
+from ansible_job_manager import run_host_registration
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -48,6 +51,13 @@ def startup_handler(settings: kopf.OperatorSettings, **kwargs):
     settings.posting.level = logging.WARNING
 
 
+# Configuration for Ansible job
+PROJECT_DIR = os.environ.get(
+    "BYOH_PROJECT_DIR",
+    "/home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM"
+)
+
+
 @kopf.on.create(O2IMS_API_GROUP, O2IMS_API_VERSION, "provisioningrequests")
 def handle_create(spec, name, namespace, logger, **kwargs):
     """
@@ -55,9 +65,10 @@ def handle_create(spec, name, namespace, logger, **kwargs):
     
     This triggers the BYOH cluster provisioning workflow:
     1. Validate the request
-    2. Generate BYOH CAPI resources
-    3. Apply resources to the cluster
-    4. Monitor cluster status until provisioned
+    2. Check if hosts are registered (run Ansible if not)
+    3. Generate BYOH CAPI resources
+    4. Apply resources to the cluster
+    5. Monitor cluster status until provisioned
     """
     logger.info(f"Processing new ProvisioningRequest: {name}")
     
@@ -89,6 +100,46 @@ def handle_create(spec, name, namespace, logger, **kwargs):
         logger.error(error_msg)
         update_status(name, namespace, ProvisioningState.FAILED, error_msg, logger)
         return {"status": "failed", "message": error_msg}
+    
+    # Check if hosts are registered as ByoHosts
+    all_hosts = masters + workers
+    unregistered_hosts = []
+    
+    for host in all_hosts:
+        host_name = host.get("hostName", host.get("host_name"))
+        if host_name:
+            result = get_byohost(host_name, namespace, logger)
+            if not result.get("status"):
+                unregistered_hosts.append(host_name)
+    
+    # If any hosts are not registered, run Ansible playbook
+    if unregistered_hosts:
+        logger.info(f"Hosts not registered: {unregistered_hosts}. Running Ansible to register...")
+        update_status(
+            name, namespace,
+            ProvisioningState.PROGRESSING,
+            f"Registering hosts: {', '.join(unregistered_hosts)}",
+            logger
+        )
+        
+        # Run Ansible job to register hosts
+        ansible_result = run_host_registration(
+            request_name=name,
+            project_dir=PROJECT_DIR,
+            namespace="o2ims-system",
+            logger=logger
+        )
+        
+        if not ansible_result.get("status"):
+            error_msg = f"Failed to register hosts: {ansible_result.get('error', 'Ansible job failed')}"
+            logger.error(error_msg)
+            update_status(name, namespace, ProvisioningState.FAILED, error_msg, logger)
+            return {"status": "failed", "message": error_msg}
+        
+        logger.info("Hosts registered successfully via Ansible")
+        
+        # Wait a bit for ByoHosts to appear
+        time.sleep(10)
     
     # Update status to progressing
     update_status(

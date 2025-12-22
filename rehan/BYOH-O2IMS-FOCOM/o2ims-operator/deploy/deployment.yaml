@@ -58,6 +58,14 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps", "secrets"]
     verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+  
+  # Batch resources for Ansible Jobs
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   
   # Coordination for leader election
   - apiGroups: ["coordination.k8s.io"]
@@ -99,6 +107,9 @@ spec:
         - name: controller
           image: o2ims-controller:local
           imagePullPolicy: Never
+          env:
+            - name: BYOH_PROJECT_DIR
+              value: "/home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM"
           ports:
             - containerPort: 8080
               name: healthz

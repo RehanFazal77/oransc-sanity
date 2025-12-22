@@ -1,0 +1,60 @@
+# FOCOM ProvisioningRequest Example
+#
+# This CR is submitted by an SMO (Service Management & Orchestration) or 
+# external orchestrator to request cluster provisioning through the O-RAN
+# O2 IMS interface.
+#
+# Flow: FocomProvisioningRequest -> ProvisioningRequest -> BYOH Cluster
+#
+apiVersion: focom.nephio.org/v1alpha1
+kind: FocomProvisioningRequest
+metadata:
+  name: edge-cluster-request
+  namespace: default
+spec:
+  # Target O-Cloud (management cluster) identifier
+  oCloudId: "management-cluster"
+  
+  # Namespace where ProvisioningRequest will be created
+  oCloudNamespace: "default"
+  
+  # Human-readable name and description
+  name: "Edge Site Cluster Provisioning"
+  description: "Provision a BYOH Kubernetes cluster for edge site deployment"
+  
+  # Template configuration
+  templateName: "byoh-workload-cluster"
+  templateVersion: "v1.0.0"
+  
+  # Template parameters for BYOH cluster
+  templateParameters:
+    # Required: cluster name (must be lowercase, valid DNS name)
+    clusterName: edge
+    
+    # Cluster provisioner type
+    clusterProvisioner: byoh
+    
+    # Kubernetes version
+    k8sVersion: "v1.32.0"
+    
+    # Host assignments
+    hosts:
+      # Master nodes
+      masters:
+        - hostId: 1
+          hostName: hpe15
+          hostIp: "hpe15.anuket.iol.unh.edu"
+      
+      # Worker nodes
+      workers:
+        - hostId: 2
+          hostName: hpe16
+          hostIp: "hpe16.anuket.iol.unh.edu"
+        - hostId: 3
+          hostName: hpe18
+          hostIp: "hpe18.anuket.iol.unh.edu"
+    
+    # Optional: labels to apply to the cluster
+    labels:
+      nephio.org/region: "us-east"
+      nephio.org/site-type: "edge"

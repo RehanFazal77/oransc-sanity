@@ -1,0 +1,40 @@
+{
+  "k8s_version": "1.32.0",
+  "hosts": [
+    {
+      "host_id": 1,
+      "host_name": "hpe15",
+      "host_ip": "hpe15.anuket.iol.unh.edu",
+      "host_user": "rehanfazal",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 2,
+      "host_name": "hpe16",
+      "host_ip": "hpe16.anuket.iol.unh.edu",
+      "host_user": "rehanfazal",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 3,
+      "host_name": "hpe18",
+      "host_ip": "hpe18.anuket.iol.unh.edu",
+      "host_user": "rehanfazal",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 4,
+      "host_name": "hpe21",
+      "host_ip": "hpe21.anuket.iol.unh.edu",
+      "host_user": "rehanfazal",
+      "host_pwd": ""
+    },
+    {
+      "host_id": 5,
+      "host_name": "hpe26",
+      "host_ip": "hpe26.anuket.iol.unh.edu",
+      "host_user": "rehanfazal",
+      "host_pwd": ""
+    }
+  ]
+}

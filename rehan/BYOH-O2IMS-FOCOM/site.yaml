@@ -153,11 +153,23 @@
         src: ./bootstrap-kubeconfig.conf
         dest: /root/bootstrap-kubeconfig.conf
 
+    - name: Set Hostname to Match Input
+      shell: |
+        hostnamectl set-hostname {{ byoh_hostname }}
+      when: byoh_hostname is defined
+
     - name: Start Agent
       shell: |
         pkill byoh-hostagent || true
         sleep 2
-        nohup /usr/local/bin/byoh-hostagent --bootstrap-kubeconfig /root/bootstrap-kubeconfig.conf --skip-installation > /var/log/byoh.log 2>&1 &
+        nohup /usr/local/bin/byoh-hostagent \
+          --bootstrap-kubeconfig /root/bootstrap-kubeconfig.conf \
+          --namespace default \
+          --skip-installation \
+          --label "host-id={{ byoh_id }}" \
+          > /var/log/byoh.log 2>&1 &
+        echo "BYOH agent started for host {{ byoh_hostname }}"
+      when: byoh_hostname is defined
 
 # ==========================================
 # PLAY 3: Host Registration & Labeling
@@ -173,7 +185,7 @@
   tasks:
     - name: Wait for ByoHosts to Register
       shell: |
-        kubectl --kubeconfig {{ kubeconfig }} get byohost {{ item.host_name }} --no-headers -o custom-columns=":metadata.name"
+        kubectl --kubeconfig {{ kubeconfig }} get byohost {{ item.host_name }} --no-headers -o custom-columns=":metadata.name" 2>/dev/null || echo ""
       register: host_check
       until: host_check.stdout | trim == item.host_name
       retries: 60
@@ -181,14 +193,32 @@
       ignore_errors: yes
       loop: "{{ input.hosts }}"
 
+    - name: Check Registration Status
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get byohosts --no-headers 2>/dev/null | wc -l
+      register: byohost_count
+
+    - name: Debug - List All ByoHosts
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get byohosts -o wide 2>/dev/null || echo "No ByoHosts found"
+      register: all_hosts
+      when: byohost_count.stdout | int == 0
+
+    - name: Show Available ByoHosts
+      debug:
+        msg: "{{ all_hosts.stdout_lines | default(['No ByoHosts found']) }}"
+      when: byohost_count.stdout | int == 0
+
     - name: Remove Restrictive Webhook
       shell: |
         kubectl --kubeconfig {{ kubeconfig }} delete validatingwebhookconfiguration byoh-validating-webhook-configuration --ignore-not-found=true
 
     - name: Pin Hosts (Label ByoHosts with IDs)
       shell: |
-        kubectl --kubeconfig {{ kubeconfig }} label byohost {{ item.host_name }} host-id={{ item.host_id }} --overwrite
+        kubectl --kubeconfig {{ kubeconfig }} label byohost {{ item.host_name }} host-id={{ item.host_id }} --overwrite 2>/dev/null || true
       loop: "{{ input.hosts }}"
+      ignore_errors: yes
+
 
     - name: Display Registered Hosts
       shell: |

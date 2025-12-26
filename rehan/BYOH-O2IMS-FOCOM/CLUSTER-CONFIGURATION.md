@@ -15,6 +15,44 @@ This guide explains how to configure the `FocomProvisioningRequest` or `Provisio
 
 ---
 
+> [!IMPORTANT]
+> ## Matching Host Details
+> 
+> The `input.json` (for Ansible) and `focom-provisioning-request.yaml` (for CAPI) **must have matching host details**:
+> 
+> **input.json** (Ansible will use this to prepare hosts):
+> ```json
+> {
+>   "hosts": [
+>     {
+>       "host_id": 1,
+>       "host_name": "byoh-1",
+>       "host_ip": "10.204.86.147",
+>       "host_user": "ubuntu"
+>     }
+>   ]
+> }
+> ```
+> 
+> **focom-provisioning-request.yaml** (O2IMS will use this for cluster creation):
+> ```yaml
+> templateParameters:
+>   hosts:
+>     masters:
+>       - hostId: 1
+>         hostName: byoh-1
+>         hostIp: "10.204.86.147"
+> ```
+> 
+> **Key fields that must match:**
+> | Field | input.json | focom-provisioning-request.yaml |
+> |-------|------------|--------------------------------|
+> | Host ID | `host_id: 1` | `hostId: 1` |
+> | Host Name | `host_name: "byoh-1"` | `hostName: "byoh-1"` |
+> | Host IP | `host_ip: "10.x.x.x"` | `hostIp: "10.x.x.x"` |
+
+---
+
 ## Supported Kubernetes Versions
 
 | Version | Status |

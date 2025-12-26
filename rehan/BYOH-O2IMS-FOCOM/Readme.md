@@ -68,7 +68,28 @@ This project implements automated provisioning of Kubernetes clusters on Linux s
 
 ## 🔄 Workflow
 
-### Phase 1: Management Cluster Setup (One-time)
+### Fully Automated Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        AUTOMATED PROVISIONING FLOW                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  1. Clone Repo          2. Run mgmt.sh         3. Edit Configs             │
+│  ─────────────          ─────────────          ─────────────               │
+│  git clone ...    ──▶   ./mgmt.sh        ──▶   vi input.json               │
+│                         (~30 mins)              vi examples/focom-...yaml  │
+│                                                                             │
+│  4. Apply Request       5. Watch Magic         6. Cluster Ready!           │
+│  ───────────────        ─────────────          ──────────────              │
+│  kubectl apply    ──▶   Auto-Ansible     ──▶   kubectl get clusters       │
+│  -f focom-...yaml       Auto-CAPI              ✅ edge: Ready              │
+│                         (~5-10 mins)                                        │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Phase 1: Management Cluster Setup (One-time, ~30 mins)
 
 ```bash
 ./mgmt.sh
@@ -79,36 +100,58 @@ This installs:
 - CAPI + BYOH provider
 - O2IMS Operator
 - FOCOM Operator
+- Ansible Runner Image (for automation)
 
-### Phase 2: Host Registration (Per host)
+### Phase 2: Configure Host Details
 
-```bash
-ansible-playbook site.yaml
+Edit `input.json` with your worker host information:
+```json
+{
+  "hosts": [
+    {
+      "host_id": 1,
+      "host_name": "byoh-1",
+      "host_ip": "10.x.x.x",
+      "host_user": "ubuntu"
+    }
+  ]
+}
 ```
 
-This:
-- Prepares Linux servers (containerd, kubelet)
-- Starts BYOH agent on each host
-- Registers hosts with management cluster
-- Labels hosts with `host-id` for pinning
-
-### Phase 3: Cluster Creation (On-demand)
-
-**Option A: Direct O2IMS**
-```bash
-kubectl apply -f examples/o2ims-provisioning-request.yaml
+Edit `examples/focom-provisioning-request.yaml` with matching host details:
+```yaml
+templateParameters:
+  clusterName: edge
+  hosts:
+    masters:
+      - hostId: 1
+        hostName: byoh-1
+        hostIp: "10.x.x.x"
 ```
 
-**Option B: Via FOCOM (SMO interface)**
+> [!IMPORTANT]
+> Host details in `input.json` and `focom-provisioning-request.yaml` **must match**. See [CLUSTER-CONFIGURATION.md](CLUSTER-CONFIGURATION.md) for details.
+
+### Phase 3: Create Cluster (Fully Automated!)
+
 ```bash
 kubectl apply -f examples/focom-provisioning-request.yaml
 ```
+
+**What happens automatically:**
+1. FOCOM creates ProvisioningRequest
+2. O2IMS checks if hosts are registered
+3. If not → **Ansible Job runs automatically** to prepare hosts
+4. BYOH CAPI resources are created
+5. Cluster is provisioned
 
 ### Phase 4: Monitor & Access
 
 ```bash
 # Watch provisioning status
+kubectl get focomprovisioningrequests -w
 kubectl get provisioningrequests -w
+kubectl get clusters -w
 
 # Access workload cluster
 kubectl get secret <cluster>-kubeconfig -o jsonpath='{.data.value}' | base64 -d > cluster.kubeconfig
@@ -128,6 +171,7 @@ kubectl --kubeconfig=cluster.kubeconfig get nodes
 | **O2IMS Interface** | `ProvisioningRequest` CRD with status reporting | ✅ |
 | **Bare-Metal Support** | CAPI BYOH provisions on Linux servers | ✅ |
 | **Orchestrator Integration** | FOCOM provides SMO-facing interface | ✅ |
+| **Automated Host Registration** | Ansible runs automatically if hosts not registered | ✅ |
 
 ### O2IMS ProvisioningRequest Lifecycle
 
@@ -139,12 +183,19 @@ kubectl --kubeconfig=cluster.kubeconfig get nodes
                      │    PENDING      │
                      └────────┬────────┘
                               │
-                     O2IMS validates & creates resources
+               O2IMS checks if hosts registered
                               │
-                              ▼
-                     ┌─────────────────┐
-                     │  PROGRESSING    │
-                     └────────┬────────┘
+         ┌────────────────────┴────────────────────┐
+         │                                         │
+    Not Registered                            Registered
+         │                                         │
+         ▼                                         │
+┌─────────────────┐                                │
+│  PROGRESSING    │                                │
+│ (Ansible Job)   │                                │
+└────────┬────────┘                                │
+         │                                         │
+         └────────────────────┬────────────────────┘
                               │
                      BYOH provisions cluster
                               │
@@ -168,22 +219,28 @@ kubectl --kubeconfig=cluster.kubeconfig get nodes
 
 ```
 BYOH-O2IMS-FOCOM/
-├── mgmt.sh                 # Management cluster setup script
-├── site.yaml               # Ansible playbook for host registration
-├── input.json              # Host inventory
-├── o2ims-operator/         # O2IMS Operator
-│   ├── controllers/        # Python controller logic
-│   ├── crds/               # ProvisioningRequest CRD
-│   ├── deploy/             # Kubernetes deployment
+├── mgmt.sh                   # Management cluster setup script
+├── site.yaml                 # Ansible playbook for host registration
+├── input.json                # Host inventory (for Ansible)
+├── o2ims-operator/           # O2IMS Operator
+│   ├── controllers/          # Python controller logic
+│   │   ├── provisioning_request_controller.py
+│   │   └── ansible_job_manager.py    # Automated Ansible execution
+│   ├── ansible-runner/       # Custom Ansible container
+│   │   └── Dockerfile
+│   ├── crds/                 # ProvisioningRequest CRD
+│   ├── deploy/               # Kubernetes deployment
 │   └── Dockerfile
-├── focom-operator/         # FOCOM Operator
-│   ├── focom_controller.py # Controller logic
-│   ├── deployment.yaml     # Kubernetes deployment
+├── focom-operator/           # FOCOM Operator
+│   ├── focom_controller.py   # Controller logic
+│   ├── deployment.yaml       # Kubernetes deployment
 │   └── Dockerfile
-├── examples/               # Sample CRs
+├── examples/                 # Sample CRs
 │   ├── o2ims-provisioning-request.yaml
 │   └── focom-provisioning-request.yaml
-└── templates/              # (Legacy) Cluster templates
+├── CLUSTER-CONFIGURATION.md  # Configuration guide
+├── FEATURE-MATRIX.md         # Roadmap
+└── templates/                # Cluster templates
 ```
 
 ---
@@ -191,21 +248,27 @@ BYOH-O2IMS-FOCOM/
 ## 🚀 Quick Start
 
 ```bash
-# 1. Setup management cluster
+# 1. Clone the repository
+git clone <repo-url>
+cd BYOH-O2IMS-FOCOM
+
+# 2. Setup management cluster (~30 mins)
 ./mgmt.sh
 
-# 2. Configure hosts in input.json
-vi input.json
+# 3. Configure hosts
+vi input.json                              # Add your host details
+vi examples/focom-provisioning-request.yaml # Add matching host details
 
-# 3. Register hosts
-ansible-playbook site.yaml
-
-# 4. Create cluster
-kubectl apply -f examples/o2ims-provisioning-request.yaml
+# 4. Create cluster (FULLY AUTOMATED!)
+kubectl apply -f examples/focom-provisioning-request.yaml
 
 # 5. Monitor
-kubectl get provisioningrequests -w
-kubectl get clusters
+kubectl get focomprovisioningrequests -w
+kubectl get clusters -w
+
+# 6. Access workload cluster
+kubectl get secret edge-kubeconfig -o jsonpath='{.data.value}' | base64 -d > edge.kubeconfig
+kubectl --kubeconfig=edge.kubeconfig get nodes
 ```
 
 ---

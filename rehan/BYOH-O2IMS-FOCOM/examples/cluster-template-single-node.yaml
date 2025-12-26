@@ -1,0 +1,35 @@
+# Single Node Development Cluster Template
+# Use this for development and testing environments
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: single-node-dev
+  namespace: default
+  labels:
+    o2ims.oran.org/template-type: development
+spec:
+  name: "Single Node Development"
+  version: "v1.0.0"
+  description: "Single node cluster for development and testing. Control plane only, no separate workers."
+  provisioner: byoh
+  k8sVersions:
+    - "v1.26.0"
+    - "v1.27.0"
+    - "v1.28.0"
+    - "v1.29.0"
+    - "v1.30.0"
+    - "v1.31.0"
+    - "v1.32.0"
+    - "v1.33.0"
+    - "v1.34.0"
+  defaultK8sVersion: "v1.32.0"
+  nodeRequirements:
+    minMasters: 1   # Odd number (1, 3, 5, etc.)
+    minWorkers: 0
+  networking:
+    podCidr: "10.244.0.0/16"
+    serviceCidr: "10.96.0.0/12"
+    cni: flannel
+  labels:
+    environment: development
+    tier: non-production

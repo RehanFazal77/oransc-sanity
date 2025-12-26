@@ -22,6 +22,14 @@ rules:
     resources: ["provisioningrequests/status"]
     verbs: ["get", "update", "patch"]
   
+  # ClusterTemplate access (Feature F3)
+  - apiGroups: ["o2ims.provisioning.oran.org"]
+    resources: ["clustertemplates"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["o2ims.provisioning.oran.org"]
+    resources: ["clustertemplates/status"]
+    verbs: ["get", "update", "patch"]
+  
   # CAPI Cluster resources
   - apiGroups: ["cluster.x-k8s.io"]
     resources: ["clusters", "machines", "machinedeployments", "machinesets"]

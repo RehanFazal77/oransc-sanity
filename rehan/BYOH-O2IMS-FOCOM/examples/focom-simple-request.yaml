@@ -1,0 +1,20 @@
+# Simplified FocomProvisioningRequest - Using input.json
+#
+# This is the SIMPLIFIED approach where cluster configuration
+# comes from input.json instead of writing everything in the YAML.
+#
+# Just reference the cluster_name from input.json!
+#
+apiVersion: focom.nephio.org/v1alpha1
+kind: FocomProvisioningRequest
+metadata:
+  name: create-ran-cluster
+  namespace: default
+spec:
+  # Simply reference the cluster name from input.json
+  # No need to repeat all the host details!
+  clusterName: "ran"
+  
+  # Optional overrides (if not specified, uses input.json values)
+  # oCloudNamespace: "default"
+  # description: "RAN workload cluster"

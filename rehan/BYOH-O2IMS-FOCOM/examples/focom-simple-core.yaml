@@ -1,0 +1,8 @@
+# Another simplified request - Core cluster
+apiVersion: focom.nephio.org/v1alpha1
+kind: FocomProvisioningRequest
+metadata:
+  name: create-core-cluster
+  namespace: default
+spec:
+  clusterName: "core"

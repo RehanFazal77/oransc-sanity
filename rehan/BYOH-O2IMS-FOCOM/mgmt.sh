@@ -396,9 +396,10 @@ deploy_o2ims_operator() {
     
     local O2IMS_DIR="$REPO_DIR/o2ims-operator"
     
-    # Apply CRD
+    # Apply CRDs
     echo "Applying O2IMS CRDs..."
     kubectl apply -f "$O2IMS_DIR/crds/provisioningrequest.yaml"
+    kubectl apply -f "$O2IMS_DIR/crds/clustertemplate.yaml"
     
     # Deploy operator
     echo "Deploying O2IMS operator..."
@@ -408,7 +409,15 @@ deploy_o2ims_operator() {
     echo "Waiting for O2IMS operator to be ready..."
     kubectl -n o2ims-system rollout status deployment/o2ims-controller --timeout=120s || true
     
+    # Apply default ClusterTemplates
+    echo "Applying default ClusterTemplates..."
+    kubectl apply -f "$REPO_DIR/examples/cluster-template-single-node.yaml"
+    kubectl apply -f "$REPO_DIR/examples/cluster-template-ha.yaml"
+    kubectl apply -f "$REPO_DIR/examples/cluster-template-edge.yaml"
+    
     echo "O2IMS operator deployed successfully"
+    echo "Available ClusterTemplates:"
+    kubectl get clustertemplates
 }
 
 build_focom_operator() {

@@ -49,11 +49,10 @@ def create_ansible_job(
     batch_api = client.BatchV1Api()
     
     # Build ansible-playbook command
-    # Use the hosts file from the project directory
+    # NOTE: No inventory flag - site.yaml uses dynamic inventory via add_host in Play 1
     command = [
         "ansible-playbook",
         f"/workspace/{playbook_path}",
-        "-i", "/workspace/hosts",
         "-v",  # Verbose output
     ]
     

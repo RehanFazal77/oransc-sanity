@@ -36,5 +36,26 @@
       "host_user": "rehanfazal",
       "host_pwd": ""
     }
+  ],
+  "clusters": [
+    {
+      "cluster_name": "ran",
+      "cluster_masters": [
+        { "host_id": 1 }
+      ],
+      "cluster_workers": [
+        { "host_id": 2 },
+        { "host_id": 3 }
+      ]
+    },
+    {
+      "cluster_name": "core",
+      "cluster_masters": [
+        { "host_id": 4 }
+      ],
+      "cluster_workers": [
+        { "host_id": 5 }
+      ]
+    }
   ]
 }

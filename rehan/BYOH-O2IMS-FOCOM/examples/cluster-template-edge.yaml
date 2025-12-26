@@ -1,0 +1,35 @@
+# Edge Site Cluster Template
+# Use this for edge deployments with limited resources
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: edge-site
+  namespace: default
+  labels:
+    o2ims.oran.org/template-type: edge
+spec:
+  name: "Edge Site Deployment"
+  version: "v1.0.0"
+  description: "Lightweight cluster for edge sites with 1 master (odd count) and optional workers."
+  provisioner: byoh
+  k8sVersions:
+    - "v1.26.0"
+    - "v1.27.0"
+    - "v1.28.0"
+    - "v1.29.0"
+    - "v1.30.0"
+    - "v1.31.0"
+    - "v1.32.0"
+    - "v1.33.0"
+    - "v1.34.0"
+  defaultK8sVersion: "v1.32.0"
+  nodeRequirements:
+    minMasters: 1   # Odd number (1, 3, 5, etc.)
+    minWorkers: 0
+  networking:
+    podCidr: "10.244.0.0/16"
+    serviceCidr: "10.96.0.0/12"
+    cni: flannel
+  labels:
+    environment: edge
+    site-type: remote

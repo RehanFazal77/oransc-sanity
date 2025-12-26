@@ -1,0 +1,35 @@
+# High Availability Production Cluster Template
+# Use this for production environments requiring HA
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: ha-production
+  namespace: default
+  labels:
+    o2ims.oran.org/template-type: production
+spec:
+  name: "High Availability Production"
+  version: "v1.0.0"
+  description: "High availability cluster with 3+ masters (odd count) and workers for production workloads."
+  provisioner: byoh
+  k8sVersions:
+    - "v1.26.0"
+    - "v1.27.0"
+    - "v1.28.0"
+    - "v1.29.0"
+    - "v1.30.0"
+    - "v1.31.0"
+    - "v1.32.0"
+    - "v1.33.0"
+    - "v1.34.0"
+  defaultK8sVersion: "v1.32.0"
+  nodeRequirements:
+    minMasters: 3   # Odd number for etcd quorum
+    minWorkers: 2
+  networking:
+    podCidr: "10.244.0.0/16"
+    serviceCidr: "10.96.0.0/12"
+    cni: flannel
+  labels:
+    environment: production
+    tier: critical

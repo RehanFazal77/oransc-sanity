@@ -450,12 +450,25 @@ deploy_focom_operator() {
     echo "=== [14/14] Deploying FOCOM Operator ==="
     
     local FOCOM_DIR="$REPO_DIR/focom-operator"
+    local FOCOM_IMAGE="focom-controller:local"
+    
+    # Build FOCOM controller image
+    echo "Building FOCOM controller image..."
+    pushd "$FOCOM_DIR" > /dev/null
+    sudo docker build -t "$FOCOM_IMAGE" .
+    
+    # Import into containerd
+    echo "Importing FOCOM controller image into Kubernetes..."
+    sudo docker save "$FOCOM_IMAGE" -o /tmp/focom-controller.tar
+    sudo ctr -n k8s.io images import /tmp/focom-controller.tar
+    sudo rm -f /tmp/focom-controller.tar
+    popd > /dev/null
     
     # Apply CRD
     echo "Applying FOCOM CRDs..."
     kubectl apply -f "$FOCOM_DIR/focomprovisioningrequest-crd.yaml"
     
-    # Deploy operator
+    # Deploy operator (uses hostPath to read input.json directly - no ConfigMap needed!)
     echo "Deploying FOCOM operator..."
     kubectl apply -f "$FOCOM_DIR/deployment.yaml"
     
@@ -464,6 +477,7 @@ deploy_focom_operator() {
     kubectl -n focom-system rollout status deployment/focom-controller --timeout=120s || true
     
     echo "FOCOM operator deployed successfully"
+    echo "NOTE: input.json is mounted directly via hostPath - changes are picked up instantly!"
 }
 
 build_ansible_runner() {

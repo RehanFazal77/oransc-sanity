@@ -3,6 +3,9 @@ Input Parser for O2IMS Operator
 
 Parses input.json to get cluster configurations and resolve host_ids to full host details.
 Supports the simplified cluster provisioning approach.
+
+IMPORTANT: This module reads input.json FRESH on every request.
+No caching - changes to input.json are picked up immediately.
 """
 
 import json
@@ -15,13 +18,13 @@ logger = logging.getLogger(__name__)
 # Default input file path (inside container)
 DEFAULT_INPUT_PATH = "/workspace/input.json"
 
-# Cached config
-_cached_config = None
-
 
 def load_input_config(path: str = None) -> Dict[str, Any]:
     """
-    Load and parse input.json.
+    Load and parse input.json FRESH every time (no caching).
+    
+    This allows changes to input.json to be picked up immediately
+    without restarting the controller or updating ConfigMaps.
     
     Args:
         path: Path to input.json (default: /workspace/input.json)
@@ -29,20 +32,15 @@ def load_input_config(path: str = None) -> Dict[str, Any]:
     Returns:
         Parsed config dict
     """
-    global _cached_config
-    
     if path is None:
         path = os.environ.get("INPUT_JSON_PATH", DEFAULT_INPUT_PATH)
     
-    # Use cache if available
-    if _cached_config is not None:
-        return _cached_config
-    
+    # ALWAYS read fresh - no caching
     try:
         with open(path, 'r') as f:
-            _cached_config = json.load(f)
+            config = json.load(f)
         logger.info(f"Loaded input.json from {path}")
-        return _cached_config
+        return config
     except FileNotFoundError:
         logger.error(f"input.json not found at {path}")
         return {}
@@ -52,9 +50,7 @@ def load_input_config(path: str = None) -> Dict[str, Any]:
 
 
 def reload_config(path: str = None) -> Dict[str, Any]:
-    """Force reload of input.json (clears cache)."""
-    global _cached_config
-    _cached_config = None
+    """Reload input.json (same as load_input_config since we don't cache)."""
     return load_input_config(path)
 
 

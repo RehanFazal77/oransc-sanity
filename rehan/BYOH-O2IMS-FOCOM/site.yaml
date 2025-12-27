@@ -183,31 +183,20 @@
     kubeconfig: "~/.kube/config"
 
   tasks:
-    - name: Wait for ByoHosts to Register
-      shell: |
-        kubectl --kubeconfig {{ kubeconfig }} get byohost {{ item.host_name }} --no-headers -o custom-columns=":metadata.name" 2>/dev/null || echo ""
-      register: host_check
-      until: host_check.stdout | trim == item.host_name
-      retries: 60
-      delay: 5
-      ignore_errors: yes
-      loop: "{{ input.hosts }}"
-
-    - name: Check Registration Status
+    # Quick check - don't wait long, O2IMS controller handles actual verification
+    - name: Brief Wait for Agent Startup
+      pause:
+        seconds: 5
+      
+    - name: Check ByoHost Registration
       shell: |
         kubectl --kubeconfig {{ kubeconfig }} get byohosts --no-headers 2>/dev/null | wc -l
       register: byohost_count
+      ignore_errors: yes
 
-    - name: Debug - List All ByoHosts
-      shell: |
-        kubectl --kubeconfig {{ kubeconfig }} get byohosts -o wide 2>/dev/null || echo "No ByoHosts found"
-      register: all_hosts
-      when: byohost_count.stdout | int == 0
-
-    - name: Show Available ByoHosts
+    - name: Show ByoHosts Status
       debug:
-        msg: "{{ all_hosts.stdout_lines | default(['No ByoHosts found']) }}"
-      when: byohost_count.stdout | int == 0
+        msg: "ByoHosts registered: {{ byohost_count.stdout | default('0') }}"
 
     - name: Remove Restrictive Webhook
       shell: |

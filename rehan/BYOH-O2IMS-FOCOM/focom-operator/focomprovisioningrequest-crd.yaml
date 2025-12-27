@@ -14,25 +14,45 @@ spec:
           properties:
             spec:
               type: object
-              required:
-                - oCloudId
-                - oCloudNamespace
-                - templateName
-                - templateVersion
-                - templateParameters
               properties:
+                # Target O-Cloud
                 oCloudId:
                   type: string
                   description: "ID of the target O-Cloud (management cluster identifier)"
                 oCloudNamespace:
                   type: string
                   description: "Namespace in the O-Cloud for the ProvisioningRequest"
+                  default: "default"
                 name:
                   type: string
                   description: "Name for the provisioning request"
                 description:
                   type: string
                   description: "Description of the provisioning request"
+                
+                # === Simplified Approaches (input.json based) ===
+                
+                # Option 1: Create ALL clusters from input.json
+                allClusters:
+                  type: boolean
+                  description: "If true, create all clusters defined in input.json"
+                  default: false
+                
+                # Option 2: Create specific clusters from input.json
+                clusterNames:
+                  type: array
+                  description: "Array of cluster names to create from input.json"
+                  items:
+                    type: string
+                
+                # Option 3: Create single cluster from input.json
+                clusterName:
+                  type: string
+                  description: "Single cluster name to create from input.json"
+                
+                # === Template-based Approach ===
+                
+                # Option 4: Use ClusterTemplate with full parameters
                 templateName:
                   type: string
                   description: "Name of the cluster template"
@@ -43,31 +63,41 @@ spec:
                   type: object
                   x-kubernetes-preserve-unknown-fields: true
                   description: "Parameters for the cluster template"
+            
             status:
               type: object
               properties:
                 phase:
                   type: string
-                  enum: ["Pending", "Creating", "Synced", "Failed", "Deleting"]
+                  enum: ["Pending", "Loading", "Validating", "Checking", "Creating", "Synced", "Failed", "Deleting"]
                 message:
                   type: string
                 lastUpdated:
                   type: string
                 remoteName:
                   type: string
-                  description: "Name of the created ProvisioningRequest in the O-Cloud"
+                  description: "Name(s) of the created ProvisioningRequest(s) in the O-Cloud"
+                validation:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  description: "Validation results"
+                feasibility:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  description: "Feasibility check results"
       subresources:
         status: {}
       additionalPrinterColumns:
-        - name: O-Cloud
-          type: string
-          jsonPath: .spec.oCloudId
         - name: Phase
           type: string
           jsonPath: .status.phase
         - name: Remote
           type: string
           jsonPath: .status.remoteName
+        - name: Message
+          type: string
+          jsonPath: .status.message
+          priority: 1
         - name: Age
           type: date
           jsonPath: .metadata.creationTimestamp

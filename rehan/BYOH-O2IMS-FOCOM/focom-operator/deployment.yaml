@@ -30,6 +30,16 @@ rules:
     resources: ["provisioningrequests/status"]
     verbs: ["get", "watch"]
   
+  # ClusterTemplate access for validation
+  - apiGroups: ["o2ims.provisioning.oran.org"]
+    resources: ["clustertemplates"]
+    verbs: ["get", "list", "watch"]
+  
+  # ByoHost access for feasibility checks
+  - apiGroups: ["infrastructure.cluster.x-k8s.io"]
+    resources: ["byohosts"]
+    verbs: ["get", "list", "watch"]
+  
   # Core resources for kopf
   - apiGroups: [""]
     resources: ["events"]
@@ -74,6 +84,13 @@ spec:
         app: focom-controller
     spec:
       serviceAccountName: focom-controller
+      # Must run on the management node where input.json exists
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: controller
           image: focom-controller:local
@@ -81,6 +98,15 @@ spec:
           ports:
             - containerPort: 8080
               name: healthz
+          env:
+            - name: INPUT_JSON_PATH
+              value: "/workspace/input.json"
+            - name: REPO_DIR
+              value: "/workspace"
+          volumeMounts:
+            - name: repo-dir
+              mountPath: /workspace
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /healthz
@@ -94,3 +120,11 @@ spec:
             requests:
               cpu: 50m
               memory: 64Mi
+      volumes:
+        # Mount the repo directory directly from host filesystem
+        # Changes to input.json are picked up INSTANTLY - no ConfigMap needed!
+        - name: repo-dir
+          hostPath:
+            path: /home/ubuntu/oransc-sanity/rehan/BYOH-O2IMS-FOCOM
+            type: Directory
+

@@ -1,0 +1,56 @@
+# Phase 3 Example: Location Hierarchy
+#
+# Define geographic locations for hosts and clusters.
+#
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: Location
+metadata:
+  name: us-east
+spec:
+  name: "US East Region"
+  description: "East coast data centers"
+  locationType: region
+  
+  geoCoordinates:
+    latitude: 40.7128
+    longitude: -74.0060
+  
+  metadata:
+    timezone: "America/New_York"
+---
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: Location
+metadata:
+  name: us-east-dc1
+spec:
+  name: "East DC 1"
+  description: "Primary east coast datacenter"
+  locationType: datacenter
+  parentLocation: us-east
+  
+  address:
+    country: "USA"
+    state: "New York"
+    city: "New York"
+  
+  hostSelector:
+    matchLabels:
+      datacenter: dc1
+---
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: Location
+metadata:
+  name: edge-site-1
+spec:
+  name: "Edge Site 1"
+  description: "5G edge compute site"
+  locationType: edge-site
+  parentLocation: us-east-dc1
+  
+  geoCoordinates:
+    latitude: 40.7282
+    longitude: -73.7949
+  
+  hostSelector:
+    matchLabels:
+      site: edge-1

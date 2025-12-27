@@ -1,0 +1,36 @@
+# Phase 3 Example: Performance Measurement Job
+#
+# Create a PM job to collect metrics from clusters.
+#
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: MeasurementJob
+metadata:
+  name: cluster-monitoring
+spec:
+  targets:
+    clusterNames:
+      - ran
+    # Or monitor all clusters:
+    # allClusters: true
+  
+  metrics:
+    - cpu
+    - memory
+    - disk
+    - nodes
+    - pods
+  
+  interval: "60s"
+  retention: "24h"
+  enabled: true
+  
+  thresholds:
+    cpu:
+      warning: 70
+      critical: 90
+    memory:
+      warning: 80
+      critical: 95
+    disk:
+      warning: 80
+      critical: 95

@@ -1,0 +1,21 @@
+# Phase 2 Example: Draft Mode (Preview)
+#
+# This request is in "draft" mode - it will validate and preview
+# without actually creating any resources.
+#
+# To execute after review:
+#   kubectl patch fpr draft-all-clusters -p '{"spec":{"approved":true}}'
+#
+apiVersion: focom.nephio.org/v1alpha1
+kind: FocomProvisioningRequest
+metadata:
+  name: draft-all-clusters
+spec:
+  # Phase 2: Draft mode
+  mode: draft
+  
+  # Preview all clusters
+  allClusters: true
+  
+  # Set to true to execute after review
+  approved: false

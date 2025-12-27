@@ -1,0 +1,102 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: alarmsubscriptions.o2ims.provisioning.oran.org
+spec:
+  group: o2ims.provisioning.oran.org
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required:
+                - callbackUrl
+              properties:
+                callbackUrl:
+                  type: string
+                  description: "Webhook URL to receive alarm notifications"
+                
+                filter:
+                  type: object
+                  properties:
+                    severities:
+                      type: array
+                      items:
+                        type: string
+                        enum: ["critical", "major", "minor", "warning", "info"]
+                      description: "Filter by severity levels"
+                    sources:
+                      type: array
+                      items:
+                        type: string
+                      description: "Filter by source names (cluster names, hosts)"
+                    categories:
+                      type: array
+                      items:
+                        type: string
+                        enum: ["provisioning", "scaling", "upgrade", "health", "resource", "network"]
+                      description: "Filter by alarm categories"
+                  description: "Subscription filter criteria"
+                
+                enabled:
+                  type: boolean
+                  default: true
+                  description: "Whether this subscription is active"
+                
+                retryPolicy:
+                  type: object
+                  properties:
+                    maxRetries:
+                      type: integer
+                      default: 3
+                    retryInterval:
+                      type: string
+                      default: "30s"
+                  description: "Retry policy for failed notifications"
+            
+            status:
+              type: object
+              properties:
+                phase:
+                  type: string
+                  enum: ["Active", "Inactive", "Failed"]
+                lastNotification:
+                  type: string
+                  description: "Timestamp of last notification sent"
+                notificationCount:
+                  type: integer
+                  description: "Total notifications sent"
+                failedCount:
+                  type: integer
+                  description: "Failed notification attempts"
+                lastError:
+                  type: string
+                  description: "Last error message"
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: URL
+          type: string
+          jsonPath: .spec.callbackUrl
+          priority: 1
+        - name: Phase
+          type: string
+          jsonPath: .status.phase
+        - name: Notifications
+          type: integer
+          jsonPath: .status.notificationCount
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+  scope: Namespaced
+  names:
+    plural: alarmsubscriptions
+    singular: alarmsubscription
+    kind: AlarmSubscription
+    shortNames:
+      - alarmsub

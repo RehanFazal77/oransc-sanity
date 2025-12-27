@@ -1,0 +1,16 @@
+# Phase 2 Example: Rollback to Previous Revision
+#
+# This request rolls back to a previous revision.
+# Check available revisions with:
+#   kubectl get provisioningrevisions -l request-name=provision-all-clusters
+#
+apiVersion: focom.nephio.org/v1alpha1
+kind: FocomProvisioningRequest
+metadata:
+  name: rollback-example
+spec:
+  # Phase 2: Rollback operation
+  rollbackToRevision: 1
+  
+  # Cluster to rollback
+  clusterName: "ran"

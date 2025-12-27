@@ -1,0 +1,61 @@
+# Resource Type Example: Define Host Specifications
+#
+# Categorize hosts by their hardware specifications.
+#
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ResourceType
+metadata:
+  name: large-compute
+spec:
+  name: "Large Compute Node"
+  description: "High-performance compute node for production workloads"
+  
+  cpu:
+    cores: 32
+    architecture: amd64
+    minCores: 16
+  
+  memory:
+    size: "128Gi"
+    minSize: "64Gi"
+  
+  storage:
+    size: "1Ti"
+    type: nvme
+    minSize: "500Gi"
+  
+  network:
+    interfaces: 4
+    bandwidth: "25Gbps"
+  
+  capabilities:
+    - gpu
+    - sriov
+  
+  matchLabels:
+    size: large
+    type: compute
+---
+# Small Edge Node
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ResourceType
+metadata:
+  name: edge-node
+spec:
+  name: "Edge Node"
+  description: "Small edge compute node"
+  
+  cpu:
+    cores: 4
+    architecture: amd64
+  
+  memory:
+    size: "16Gi"
+  
+  storage:
+    size: "100Gi"
+    type: ssd
+  
+  matchLabels:
+    size: small
+    type: edge

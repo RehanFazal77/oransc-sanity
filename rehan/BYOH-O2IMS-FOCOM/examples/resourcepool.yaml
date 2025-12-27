@@ -1,0 +1,40 @@
+# Resource Pool Example: Production Pool
+#
+# Groups hosts into logical pools for organization and isolation.
+#
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ResourcePool
+metadata:
+  name: production-pool
+spec:
+  name: "Production Pool"
+  description: "Production environment hosts"
+  tier: production
+  location: "datacenter-1"
+  
+  # Select hosts by label
+  hostSelector:
+    matchLabels:
+      environment: production
+  
+  # Or explicitly list host IDs
+  # hostIds: [1, 2, 3]
+  
+  # Capacity limits
+  maxHosts: 10
+  reservedHosts: 1  # Keep 1 host for failover
+---
+# Resource Pool Example: Development Pool
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ResourcePool
+metadata:
+  name: development-pool
+spec:
+  name: "Development Pool"
+  description: "Development and testing hosts"
+  tier: development
+  location: "datacenter-1"
+  
+  hostSelector:
+    matchLabels:
+      environment: development

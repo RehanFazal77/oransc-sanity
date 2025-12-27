@@ -30,6 +30,30 @@ spec:
                   type: string
                   description: "Description of the provisioning request"
                 
+                # === Operation Type (Phase 2) ===
+                operation:
+                  type: string
+                  description: "Type of operation: create, scale, upgrade, delete"
+                  enum: ["create", "scale", "upgrade", "delete"]
+                  default: "create"
+                
+                # === Draft/Execute Mode (Phase 2) ===
+                mode:
+                  type: string
+                  description: "Request mode: draft (preview only) or execute (actually provision)"
+                  enum: ["draft", "execute"]
+                  default: "execute"
+                
+                approved:
+                  type: boolean
+                  description: "For draft mode - set to true to approve and execute"
+                  default: false
+                
+                # === Rollback (Phase 2) ===
+                rollbackToRevision:
+                  type: integer
+                  description: "Revision number to rollback to"
+                
                 # === Simplified Approaches (input.json based) ===
                 
                 # Option 1: Create ALL clusters from input.json
@@ -63,13 +87,23 @@ spec:
                   type: object
                   x-kubernetes-preserve-unknown-fields: true
                   description: "Parameters for the cluster template"
+                
+                # === Scaling Parameters (Phase 2) ===
+                targetWorkerCount:
+                  type: integer
+                  description: "Target number of worker nodes for scale operation"
+                
+                # === Upgrade Parameters (Phase 3) ===
+                targetK8sVersion:
+                  type: string
+                  description: "Target Kubernetes version for upgrade operation"
             
             status:
               type: object
               properties:
                 phase:
                   type: string
-                  enum: ["Pending", "Loading", "Validating", "Checking", "Creating", "Synced", "Failed", "Deleting"]
+                  enum: ["Pending", "Loading", "Validating", "Checking", "Creating", "Scaling", "Upgrading", "Synced", "Failed", "Deleting", "Draft", "RollingBack"]
                 message:
                   type: string
                 lastUpdated:
@@ -85,19 +119,42 @@ spec:
                   type: object
                   x-kubernetes-preserve-unknown-fields: true
                   description: "Feasibility check results"
+                # Phase 2: Versioning
+                revision:
+                  type: integer
+                  description: "Current revision number"
+                revisionHistory:
+                  type: array
+                  description: "List of revision numbers"
+                  items:
+                    type: integer
+                # Phase 2: Scaling
+                currentWorkerCount:
+                  type: integer
+                  description: "Current number of worker nodes"
+                targetWorkerCount:
+                  type: integer
+                  description: "Target number of worker nodes"
+                # Phase 2: Draft mode
+                draftPreview:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  description: "Preview of what will be created in draft mode"
       subresources:
         status: {}
       additionalPrinterColumns:
         - name: Phase
           type: string
           jsonPath: .status.phase
+        - name: Operation
+          type: string
+          jsonPath: .spec.operation
         - name: Remote
           type: string
           jsonPath: .status.remoteName
-        - name: Message
-          type: string
-          jsonPath: .status.message
-          priority: 1
+        - name: Revision
+          type: integer
+          jsonPath: .status.revision
         - name: Age
           type: date
           jsonPath: .metadata.creationTimestamp

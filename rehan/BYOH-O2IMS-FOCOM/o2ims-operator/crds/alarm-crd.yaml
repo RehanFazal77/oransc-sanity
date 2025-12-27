@@ -1,0 +1,115 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: alarms.o2ims.provisioning.oran.org
+spec:
+  group: o2ims.provisioning.oran.org
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required:
+                - severity
+                - source
+                - message
+              properties:
+                alarmId:
+                  type: string
+                  description: "Unique identifier for the alarm"
+                
+                severity:
+                  type: string
+                  description: "Alarm severity level"
+                  enum: ["critical", "major", "minor", "warning", "info"]
+                
+                source:
+                  type: string
+                  description: "Source of the alarm (cluster name, host name, etc.)"
+                
+                sourceType:
+                  type: string
+                  description: "Type of source"
+                  enum: ["cluster", "host", "node", "pod", "operator"]
+                
+                message:
+                  type: string
+                  description: "Human-readable alarm message"
+                
+                description:
+                  type: string
+                  description: "Detailed description of the alarm"
+                
+                category:
+                  type: string
+                  description: "Alarm category"
+                  enum: ["provisioning", "scaling", "upgrade", "health", "resource", "network"]
+                
+                raisedAt:
+                  type: string
+                  description: "Timestamp when alarm was raised"
+                
+                # Additional context
+                context:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  description: "Additional context data for the alarm"
+                
+                # Auto-clear configuration
+                autoClearAfter:
+                  type: string
+                  description: "Duration after which alarm auto-clears (e.g., '1h')"
+            
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                  description: "Current alarm state"
+                  enum: ["active", "acknowledged", "cleared"]
+                acknowledgedAt:
+                  type: string
+                  description: "Timestamp when alarm was acknowledged"
+                acknowledgedBy:
+                  type: string
+                  description: "User who acknowledged the alarm"
+                clearedAt:
+                  type: string
+                  description: "Timestamp when alarm was cleared"
+                clearedBy:
+                  type: string
+                  description: "User or system that cleared the alarm"
+                clearReason:
+                  type: string
+                  description: "Reason the alarm was cleared"
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: Severity
+          type: string
+          jsonPath: .spec.severity
+        - name: Source
+          type: string
+          jsonPath: .spec.source
+        - name: State
+          type: string
+          jsonPath: .status.state
+        - name: Message
+          type: string
+          jsonPath: .spec.message
+          priority: 1
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+  scope: Namespaced
+  names:
+    plural: alarms
+    singular: alarm
+    kind: Alarm
+    shortNames:
+      - alm

@@ -1,0 +1,37 @@
+# Phase 3 Example: Alarm Subscription
+#
+# Subscribe to receive alarm notifications via webhook.
+#
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: AlarmSubscription
+metadata:
+  name: critical-alerts
+spec:
+  callbackUrl: "http://smo.example.com/alarms/webhook"
+  
+  filter:
+    severities:
+      - critical
+      - major
+    categories:
+      - provisioning
+      - upgrade
+      - health
+  
+  enabled: true
+  
+  retryPolicy:
+    maxRetries: 3
+    retryInterval: "30s"
+---
+# Subscribe to all alarms from specific cluster
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: AlarmSubscription
+metadata:
+  name: ran-cluster-alerts
+spec:
+  callbackUrl: "http://monitoring.example.com/webhooks/ran"
+  
+  filter:
+    sources:
+      - ran

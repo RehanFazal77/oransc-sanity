@@ -1,0 +1,18 @@
+# Phase 3 Example: Kubernetes Version Upgrade
+#
+# This example shows how to upgrade a cluster's K8s version.
+# CAPI performs rolling upgrades - one node at a time.
+#
+apiVersion: focom.nephio.org/v1alpha1
+kind: FocomProvisioningRequest
+metadata:
+  name: upgrade-ran-cluster
+spec:
+  # Phase 3: Upgrade operation
+  operation: upgrade
+  
+  # Which cluster to upgrade
+  clusterName: "ran"
+  
+  # Target K8s version (only +1 minor allowed)
+  targetK8sVersion: "v1.33.0"

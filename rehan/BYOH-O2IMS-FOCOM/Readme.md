@@ -1,4 +1,4 @@
-# Multi-Cluster LCM with O2IMS Support
+# Multi-Cluster LCM with O2IMS and FOCOM Support 
 
 A Kubernetes-native Multi-Cluster Lifecycle Management (LCM) system with O-RAN O2 IMS support for provisioning bare-metal Kubernetes clusters.
 

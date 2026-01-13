@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: byoh-system
+  labels:
+    app.kubernetes.io/name: byoh
+    app.kubernetes.io/component: infrastructure-provider

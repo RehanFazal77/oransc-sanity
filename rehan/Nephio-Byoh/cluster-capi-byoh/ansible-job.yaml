@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: byoh-cluster-provisioner
+  namespace: default
+  labels:
+    app.kubernetes.io/name: byoh-cluster-provisioner
+    app.kubernetes.io/component: provisioner
+spec:
+  ttlSecondsAfterFinished: 3600  # Auto-cleanup after 1 hour
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: byoh-cluster-provisioner
+    spec:
+      serviceAccountName: byoh-provisioner
+      restartPolicy: OnFailure
+      # Run on the node where SSH keys are available
+      hostNetwork: true
+      
+      containers:
+        - name: ansible-runner
+          image: nephio-ansible-runner:local
+          imagePullPolicy: Never  # Use local image
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "=== BYOH Cluster Provisioner ==="
+              echo "Starting at $(date)"
+              
+              # SSH keys are mounted from host's ~/.ssh directory
+              # User must have run ssh-copy-id to target servers beforehand
+              
+              # Setup kubeconfig from service account
+              export KUBECONFIG=/tmp/kubeconfig
+              kubectl config set-cluster mgmt --server=https://kubernetes.default.svc --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              kubectl config set-credentials sa --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+              kubectl config set-context mgmt --cluster=mgmt --user=sa
+              kubectl config use-context mgmt
+              
+              echo "Testing kubectl access..."
+              kubectl get nodes
+              
+              echo "Running Ansible playbook..."
+              cd /ansible
+              ansible-playbook site.yaml -e "@/config/input.json" -v
+              
+              echo "=== Provisioning Complete ==="
+              echo "Finished at $(date)"
+          
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: ssh-keys
+              mountPath: /root/.ssh
+              readOnly: true
+          
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      
+      volumes:
+        - name: config
+          configMap:
+            name: byoh-cluster-config
+        # Mount SSH keys from host (user must have set up ssh-copy-id)
+        - name: ssh-keys
+          hostPath:
+            path: /root/.ssh  # Adjust if user's home is different
+            type: Directory

@@ -1,0 +1,253 @@
+# ==========================================
+# Nephio BYOH Cluster Provisioner
+# Modified site.yaml for running inside Kubernetes Pod
+# ==========================================
+
+# ==========================================
+# PLAY 1: Key Rotation & Inventory Setup
+# ==========================================
+- name: 1. Setup Bootstrap Keys & Build Inventory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    # Input is passed via -e "@/config/input.json"
+    kubeconfig: "/tmp/kubeconfig"
+  
+  tasks:
+    - name: Delete old BootstrapKubeconfig objects
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} delete bootstrapkubeconfig --all -n default --ignore-not-found=true
+
+    - name: Get API Server Endpoint
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} config view -ojsonpath='{.clusters[0].cluster.server}'
+      register: api_server
+    
+    - name: Get CA Cert
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} config view --flatten -ojsonpath='{.clusters[0].cluster.certificate-authority-data}'
+      register: ca_cert
+
+    - name: Create Fresh BootstrapKubeconfig
+      shell: |
+        cat <<EOF | kubectl --kubeconfig {{ kubeconfig }} apply -f -
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: BootstrapKubeconfig
+        metadata:
+          name: bootstrap-kubeconfig
+          namespace: default
+        spec:
+          apiserver: "{{ api_server.stdout }}"
+          certificate-authority-data: "{{ ca_cert.stdout }}"
+        EOF
+
+    - name: Wait for Token to be Generated
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get bootstrapkubeconfig bootstrap-kubeconfig -n default -o=jsonpath='{.status.bootstrapKubeconfigData}'
+      register: bootstrap_data
+      until: bootstrap_data.stdout != ""
+      retries: 30
+      delay: 2
+
+    - name: Save Bootstrap Kubeconfig to File
+      copy:
+        content: "{{ bootstrap_data.stdout }}"
+        dest: "/tmp/bootstrap-kubeconfig.conf"
+        mode: '0600'
+
+    - name: Build Dynamic Inventory from input.json
+      add_host:
+        name: "{{ item.host_ip }}"
+        groups: physical_nodes
+        ansible_user: "{{ item.host_user }}"
+        ansible_ssh_private_key_file: "/root/.ssh/id_rsa"
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+        byoh_hostname: "{{ item.host_name }}"
+        byoh_id: "{{ item.host_id }}"
+      loop: "{{ input.hosts }}"
+
+# ==========================================
+# PLAY 2: Host Provisioning (Physical Layer)
+# ==========================================
+- name: 2. Configure Target Hosts & Install BYOH Agent
+  hosts: physical_nodes
+  become: true
+  vars:
+    # Input is inherited from the playbook invocation
+    target_k8s_version: "{{ input.k8s_version | default('1.32.0') }}"
+    k8s_pkg_version: "{{ target_k8s_version }}-1.1"
+    k8s_repo_version: "v{{ target_k8s_version.split('.')[0] }}.{{ target_k8s_version.split('.')[1] }}"
+  
+  tasks:
+    - name: Disable swap
+      shell: |
+        swapoff -a
+        sed -i '/swap/d' /etc/fstab
+
+    - name: Load kernel modules
+      shell: |
+        modprobe overlay
+        modprobe br_netfilter
+        echo "overlay" > /etc/modules-load.d/containerd.conf
+        echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+
+    - name: Set sysctl params for Kubernetes
+      shell: |
+        cat > /etc/sysctl.d/kubernetes.conf <<EOF
+        net.bridge.bridge-nf-call-ip6tables = 1
+        net.bridge.bridge-nf-call-iptables = 1
+        net.ipv4.ip_forward = 1
+        EOF
+        sysctl --system
+
+    - name: Install Containerd
+      apt:
+        name: containerd
+        state: present
+        update_cache: yes
+
+    - name: Configure Containerd with SystemdCgroup
+      shell: |
+        mkdir -p /etc/containerd
+        containerd config default > /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+        systemctl restart containerd
+        systemctl enable containerd
+
+    - name: Install Kubernetes Prerequisites
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+          - socat
+          - ebtables
+          - ethtool
+          - conntrack
+        state: present
+
+    - name: Add Kubernetes Repository & Install Binaries
+      shell: |
+        rm -f /etc/apt/sources.list.d/kubernetes.list
+        mkdir -p /etc/apt/keyrings
+        
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/{{ k8s_repo_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg --yes
+        echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_repo_version }}/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
+        
+        apt-get update
+        apt-get install -y --allow-downgrades --allow-change-held-packages kubelet={{ k8s_pkg_version }} kubeadm={{ k8s_pkg_version }} kubectl={{ k8s_pkg_version }}
+        apt-mark hold kubelet kubeadm kubectl
+
+    - name: Download BYOH Host Agent
+      get_url:
+        url: "https://github.com/vmware-tanzu/cluster-api-provider-bringyourownhost/releases/download/v0.5.0/byoh-hostagent-linux-amd64"
+        dest: /usr/local/bin/byoh-hostagent
+        mode: '0755'
+        force: yes
+
+    - name: Copy Bootstrap Kubeconfig to Host
+      copy:
+        src: /tmp/bootstrap-kubeconfig.conf
+        dest: /root/bootstrap-kubeconfig.conf
+        mode: '0600'
+
+    - name: Start BYOH Host Agent
+      shell: |
+        pkill byoh-hostagent || true
+        sleep 2
+        nohup /usr/local/bin/byoh-hostagent --bootstrap-kubeconfig /root/bootstrap-kubeconfig.conf --skip-installation > /var/log/byoh.log 2>&1 &
+        sleep 5
+        echo "Agent started, checking log..."
+        tail -20 /var/log/byoh.log || true
+
+# ==========================================
+# PLAY 3: Cluster Orchestration (CAPI Layer)
+# ==========================================
+- name: 3. Create Workload Clusters via CAPI
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    kubeconfig: "/tmp/kubeconfig"
+    cluster_k8s_version: "v{{ input.k8s_version | default('1.32.0') }}"
+
+  tasks:
+    - name: Wait for All ByoHosts to Register
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get byohost {{ item.host_name }} --no-headers -o custom-columns=":metadata.name"
+      register: host_check
+      until: host_check.stdout | trim == item.host_name
+      retries: 60
+      delay: 5
+      ignore_errors: yes
+      loop: "{{ input.hosts }}"
+
+    - name: Display Registered Hosts
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} get byohosts
+      register: byohosts_list
+
+    - name: Show Registered Hosts
+      debug:
+        msg: "{{ byohosts_list.stdout_lines }}"
+
+    - name: Remove Restrictive Webhook (if exists)
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} delete validatingwebhookconfiguration byoh-validating-webhook-configuration --ignore-not-found=true
+
+    - name: Label ByoHosts with Host IDs
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} label byohost {{ item.host_name }} host-id={{ item.host_id }} --overwrite
+      loop: "{{ input.hosts }}"
+
+    - name: Generate CAPI Manifests from Template
+      template:
+        src: templates/cluster.yaml.j2
+        dest: /tmp/clusters.yaml
+      vars:
+        cluster_k8s_version: "v{{ input.k8s_version | default('1.32.0') }}"
+
+    - name: Display Generated Manifests
+      shell: |
+        echo "=== Generated CAPI Manifests ==="
+        head -100 /tmp/clusters.yaml
+
+    - name: Apply CAPI Manifests
+      shell: |
+        kubectl --kubeconfig {{ kubeconfig }} apply -f /tmp/clusters.yaml
+
+    - name: Wait for Clusters to Provision
+      shell: |
+        echo "Waiting for clusters to provision..."
+        sleep 30
+        kubectl --kubeconfig {{ kubeconfig }} get clusters,machines
+
+    - name: Extract Cluster Kubeconfigs
+      shell: |
+        echo "=== Extracting Cluster Kubeconfigs ==="
+        for i in {1..30}; do
+            SECRETS=$(kubectl --kubeconfig {{ kubeconfig }} get secrets --field-selector type=cluster.x-k8s.io/secret -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep -e '-kubeconfig$' || true)
+            if [ -n "$SECRETS" ]; then
+                echo "Found kubeconfig secrets: $SECRETS"
+                for SEC in $SECRETS; do
+                    CLUSTER_NAME=$(echo $SEC | sed 's/-kubeconfig$//')
+                    kubectl --kubeconfig {{ kubeconfig }} get secret $SEC -o jsonpath='{.data.value}' | base64 -d > /tmp/${CLUSTER_NAME}.kubeconfig
+                    echo "Saved /tmp/${CLUSTER_NAME}.kubeconfig"
+                done
+                break
+            fi
+            echo "Waiting for kubeconfig secrets... ($i/30)"
+            sleep 10
+        done
+      register: kubeconfig_output
+
+    - name: Display Provisioning Result
+      debug:
+        msg: "{{ kubeconfig_output.stdout_lines }}"
+
+    - name: Final Status
+      shell: |
+        echo "=== Final Cluster Status ==="
+        kubectl --kubeconfig {{ kubeconfig }} get clusters,machines,byohosts

@@ -1,0 +1,82 @@
+# =============================================================================
+# Cluster Configuration
+# =============================================================================
+# Edit the input.json section below with your server details and cluster topology.
+# This is the ONLY file you need to edit to create workload clusters.
+#
+# After editing, run: kpt live apply
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: byoh-cluster-config
+  namespace: default
+  labels:
+    app.kubernetes.io/name: byoh-cluster-provisioner
+    app.kubernetes.io/component: config
+data:
+  # ============================================================
+  # EDIT BELOW: Your server details and cluster configuration
+  # ============================================================
+  input.json: |
+    {
+      "k8s_version": "1.32.0",
+      "hosts": [
+        {
+          "host_id": 1,
+          "host_name": "hpe15",
+          "host_ip": "hpe15.anuket.iol.unh.edu",
+          "host_user": "rehanfazal",
+          "host_pwd": ""
+        },
+        {
+          "host_id": 2,
+          "host_name": "hpe16",
+          "host_ip": "hpe16.anuket.iol.unh.edu",
+          "host_user": "rehanfazal",
+          "host_pwd": ""
+        },
+        {
+          "host_id": 3,
+          "host_name": "hpe18",
+          "host_ip": "hpe18.anuket.iol.unh.edu",
+          "host_user": "rehanfazal",
+          "host_pwd": ""
+        },
+        {
+          "host_id": 4,
+          "host_name": "hpe21",
+          "host_ip": "hpe21.anuket.iol.unh.edu",
+          "host_user": "rehanfazal",
+          "host_pwd": ""
+        },
+        {
+          "host_id": 5,
+          "host_name": "hpe26",
+          "host_ip": "hpe26.anuket.iol.unh.edu",
+          "host_user": "rehanfazal",
+          "host_pwd": ""
+        }
+      ],
+      "clusters": [
+        {
+          "cluster_name": "ran",
+          "cluster_masters": [
+            { "host_id": 1 }
+          ],
+          "cluster_workers": [
+            { "host_id": 2 },
+            { "host_id": 3 }
+          ]
+        },
+        {
+          "cluster_name": "core",
+          "cluster_masters": [
+            { "host_id": 4 }
+          ],
+          "cluster_workers": [
+            { "host_id": 5 }
+          ]
+        }
+      ]
+    }

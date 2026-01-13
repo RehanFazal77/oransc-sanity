@@ -1,0 +1,25 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: nephio-byoh-setup
+  annotations:
+    config.kubernetes.io/local-config: "true"
+info:
+  description: |
+    One-time setup package to install ClusterAPI BYOH provider on Nephio management cluster.
+    
+    This package installs:
+    - ClusterAPI core components
+    - BYOH infrastructure provider
+    - Patched BYOH controller with fixes
+    - Required CRDs and RBAC
+    
+    Usage:
+    1. Run: kpt live init && kpt live apply
+    2. Wait for all components to be ready
+    3. Use cluster-capi-byoh package to create workload clusters
+  keywords:
+    - nephio
+    - cluster-api
+    - byoh
+    - setup

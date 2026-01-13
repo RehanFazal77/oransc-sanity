@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: byoh-setup-job
+  namespace: default
+  labels:
+    app.kubernetes.io/name: nephio-byoh-setup
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: byoh-setup-sa
+      restartPolicy: OnFailure
+      containers:
+      - name: setup
+        image: bitnami/kubectl:latest
+        command:
+          - /bin/bash
+          - -c
+          - |
+            set -e
+            echo "=== Nephio BYOH Setup ==="
+            
+            # Step 1: Install cert-manager if not present
+            echo "[1/4] Checking cert-manager..."
+            if ! kubectl get namespace cert-manager &> /dev/null; then
+                echo "Installing cert-manager..."
+                kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
+                echo "Waiting for cert-manager..."
+                sleep 30
+                kubectl wait --for=condition=Available deployment/cert-manager -n cert-manager --timeout=300s || true
+            else
+                echo "cert-manager already installed"
+            fi
+            
+            # Step 2: Check if clusterctl is needed (CAPI already installed?)
+            echo "[2/4] Checking ClusterAPI..."
+            if kubectl get namespace capi-system &> /dev/null; then
+                echo "CAPI already installed"
+            else
+                echo "CAPI not found - please run clusterctl init --infrastructure byoh manually"
+                echo "This job cannot install CAPI components as it requires clusterctl"
+                exit 1
+            fi
+            
+            # Step 3: Patch BYOH controller
+            echo "[3/4] Patching BYOH controller..."
+            if kubectl get deployment byoh-controller-manager -n byoh-system &> /dev/null; then
+                kubectl set image deployment/byoh-controller-manager \
+                    manager=rehanfazal47/byoh-controller:controller-enhanced \
+                    -n byoh-system
+                kubectl rollout status deployment/byoh-controller-manager -n byoh-system --timeout=120s
+                echo "BYOH controller patched"
+            else
+                echo "BYOH controller not found"
+            fi
+            
+            # Step 4: Verify
+            echo "[4/4] Verifying installation..."
+            kubectl get pods -n capi-system
+            kubectl get pods -n byoh-system
+            
+            echo ""
+            echo "=== Setup Complete ==="
+            echo "Next: Use cluster-capi-byoh package to create workload clusters"

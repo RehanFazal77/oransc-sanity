@@ -1,0 +1,49 @@
+# =============================================================================
+# RBAC for BYOH Setup
+# =============================================================================
+# 
+# This file contains TWO sets of RBAC:
+#
+# 1. byoh-setup-sa / byoh-setup-admin
+#    - Used by the setup-job.yaml (optional Kubernetes Job for setup)
+#    - Needs cluster-admin because it modifies ClusterRoles and deployments
+#
+# 2. byoh-provisioner / byoh-provisioner-role  
+#    - Used by the Ansible Job that creates workload clusters
+#    - Has specific permissions for CAPI/BYOH resources only
+#
+# The setup.sh script creates #2 automatically. This file is for #1 only.
+# =============================================================================
+
+---
+# ServiceAccount for the setup Job
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: byoh-setup-sa
+  namespace: default
+  labels:
+    app.kubernetes.io/name: nephio-byoh-setup
+    app.kubernetes.io/component: setup
+
+---
+# ClusterRoleBinding giving setup Job admin permissions
+# This is needed because the setup Job must:
+#   - Modify deployments in byoh-system namespace (patch controller image)
+#   - Patch ClusterRoles (add byomachines permissions)
+#   - Create RBAC resources
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: byoh-setup-admin
+  labels:
+    app.kubernetes.io/name: nephio-byoh-setup
+    app.kubernetes.io/component: setup
+subjects:
+  - kind: ServiceAccount
+    name: byoh-setup-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin  # Full admin - required for patching ClusterRoles
+  apiGroup: rbac.authorization.k8s.io

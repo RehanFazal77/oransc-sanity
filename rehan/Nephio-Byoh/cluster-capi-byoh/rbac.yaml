@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: byoh-provisioner
+  namespace: default
+  labels:
+    app.kubernetes.io/name: byoh-cluster-provisioner
+    app.kubernetes.io/component: rbac
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: byoh-provisioner-role
+rules:
+  # ClusterAPI resources
+  - apiGroups: ["cluster.x-k8s.io"]
+    resources: ["clusters", "machines", "machinedeployments", "machinesets"]
+    verbs: ["*"]
+  # BYOH resources
+  - apiGroups: ["infrastructure.cluster.x-k8s.io"]
+    resources: ["byoclusters", "byohosts", "byomachinetemplates", "bootstrapkubeconfigs", "k8sinstallerconfigtemplates"]
+    verbs: ["*"]
+  # Control plane resources
+  - apiGroups: ["controlplane.cluster.x-k8s.io"]
+    resources: ["kubeadmcontrolplanes"]
+    verbs: ["*"]
+  # Bootstrap resources
+  - apiGroups: ["bootstrap.cluster.x-k8s.io"]
+    resources: ["kubeadmconfigs", "kubeadmconfigtemplates"]
+    verbs: ["*"]
+  # Core resources
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps", "nodes"]
+    verbs: ["*"]
+  # CSR resources
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["certificatesigningrequests"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: byoh-provisioner-binding
+subjects:
+  - kind: ServiceAccount
+    name: byoh-provisioner
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: byoh-provisioner-role
+  apiGroup: rbac.authorization.k8s.io

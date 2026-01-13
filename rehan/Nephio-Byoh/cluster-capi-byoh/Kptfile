@@ -1,0 +1,28 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: cluster-capi-byoh
+  annotations:
+    config.kubernetes.io/local-config: "true"
+info:
+  description: |
+    Blueprint for provisioning real kubeadm-based Kubernetes clusters 
+    on bare-metal Linux servers using ClusterAPI BYOH provider.
+    
+    Usage:
+    1. Edit input.json with your server details and cluster topology
+    2. Run: kpt live init (first time only)
+    3. Run: kpt live apply
+  keywords:
+    - nephio
+    - cluster-api
+    - byoh
+    - bare-metal
+    - kubeadm
+  site: https://github.com/nephio-project
+
+pipeline:
+  mutators:
+    - image: gcr.io/kpt-fn/set-annotations:v0.1.4
+      configMap:
+        app.kubernetes.io/managed-by: kpt
